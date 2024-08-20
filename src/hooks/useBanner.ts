@@ -12,7 +12,7 @@ export const useBanner = (location:any ,dispatch:any,type:(string | null) = null
         error: bannerError,
         mutate: reloadbanner
     } = useSWR(
-       ((location.pathname === "/banner" || location.pathname === "/films" ) && getAccessToken()) ? [search === null ? '/banner?page=1&limit=100' :`/banner?page=1&limit=100&${type}=${search}`, getAccessToken()] : null ,fetcher)
+       ((location.pathname === "/banners" || location.pathname === "/films" ) && getAccessToken()) ? [search === null ? '/banner?page=1&limit=100' :`/banner?page=1&limit=100&${type}=${search}`, getAccessToken()] : null ,fetcher)
        useEffect(()=>{
         const Banner = async ()=>{
             const newbanner = await reloadbanner();
@@ -20,6 +20,7 @@ export const useBanner = (location:any ,dispatch:any,type:(string | null) = null
              if(!search){
                 dispatch(setAllBanner(newbanner.data))
             }
+           
              dispatch(setBanner(newbanner.data))
          }
        

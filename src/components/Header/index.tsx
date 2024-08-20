@@ -37,49 +37,14 @@ const Name = styled(Box)<BoxProps>(()=>({
   letterSpacing: '0.2px',
   marginRight: "20px"
 }))
-// const LogoWrapper = styled(Box)<BoxProps>({
-//   display: 'flex',
-// });
 
-// const ImageBox = styled(Box)<BoxProps>({
-//   display: 'flex',
-//   alignItems: 'center',
-//   marginRight: '3.125rem',
-// });
-
-// const HeaderTitle = styled(Typography)<TypographyProps>({
-//   margin: '0',
-//   color: '#121212',
-//   fontSize: '1.5rem',
-//   fontWeight: '700',
-//   display: 'flex',
-//   alignItems: 'center',
-// });
-
-// const LogoutBnt = styled(Button)<ButtonProps>({
-//   marginLeft: '4.625rem',
-// });
-
-// const EmailWrapper = styled(Box)<BoxProps>({
-//   display: 'flex',
-// });
-
-// const Email = styled(Typography)<TypographyProps>({
-//   margin: '0',
-//   display: 'flex',
-//   alignItems: 'center',
-// });
-
-// const Divider = styled(Box)<BoxProps>({
-//   flexGrow: 1,
-// });
 interface Props{
   title:string,
   avatar:string,
   name:string
 }
 export const Header = ({title, avatar, name}:Props) => {
-  
+  console.log("title:", title)
   return (
    <Container>
     <Title>{title}</Title>

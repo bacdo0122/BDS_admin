@@ -12,7 +12,7 @@ export const useCategory = (location:any ,dispatch:any,type:(string | null) = nu
         error: categoryError,
         mutate: reloadCategory
     } = useSWR(
-       ((location.pathname === "/categories" || location.pathname === "/films" ) && getAccessToken()) ? [search === null ? '/categories?page=1&limit=100' :`/categories?page=1&limit=100&${type}=${search}`, getAccessToken()] : null ,fetcher)
+       ((location.pathname === "/listing_types" || location.pathname === "/listings" ) && getAccessToken()) ? [search === null ? '/typeListing?page=1&limit=100' :`/typeListing?page=1&limit=100&${type}=${search}`, getAccessToken()] : null ,fetcher)
        useEffect(()=>{
         const Category = async ()=>{
             const newCategory = await reloadCategory();

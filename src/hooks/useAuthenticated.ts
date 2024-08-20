@@ -29,7 +29,7 @@ export const useAuthenticated = () => {
     },[user,userError])
     
     useEffect(()=>{
-      
+      console.log("data:", user)
       if(getAccessToken() !== null && getAccessToken() && !publicRouters.includes(location.pathname) ){
         
         dispatch(setAuthenticated(true));
@@ -41,10 +41,10 @@ export const useAuthenticated = () => {
       }else if (
         ((isAuthenticated !== null && !isAuthenticated) || !getAccessToken())
       ) {
-         console.log(publicRouters.includes(location.pathname))
+        console.log("a")
         dispatch(setAuthenticated(false));
         navigate('/login');
       }
-    },[isAuthenticated])
+    },[isAuthenticated, location.pathname])
 
 }

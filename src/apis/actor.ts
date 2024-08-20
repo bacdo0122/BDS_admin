@@ -1,15 +1,15 @@
 import { axiosInstance } from 'apis';
 
-export const CreateNewActor = async(name:string, bod:string, description:string)=>{
-   return  await axiosInstance.post("/actors", {
-        name,bod,descriptions:description
+export const CreateNewListingCategory = async(name:string, description:string)=>{
+   return  await axiosInstance.post("/categoryListing/create", {
+        name,description
     })
- 
+  
 }
 
-export const EditExisActor = async(id:string, name:string, bod:string, description:string)=>{
-    return await axiosInstance.post("/actors/edit", {
-        id, name,bod,descriptions:description
+export const EditListingCategory = async(id:string, name:string, description:string)=>{
+    return await axiosInstance.put("/categoryListing/edit", {
+        id, name,description
     })
 
 }

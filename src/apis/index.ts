@@ -11,7 +11,6 @@ export const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
    function (config){
-    console.log(getRefreshToken())
     config.headers ={
         Authorization: `Bearer ${getAccessToken()}`,
     }
@@ -32,15 +31,17 @@ axiosInstance.interceptors.response.use(
         
         const isRefreshTokenErrorApi = error.config.url.includes("refresh-token");
        
-        if(error.response.status === 401 && !originalRequest._retry && !isRefreshTokenErrorApi){
+        if(getAccessToken()){
+            if(error.response.status === 401 && !originalRequest._retry && !isRefreshTokenErrorApi){
            
-            originalRequest._retry = true;
-            const {accessToken, refreshToken} = await refreshAccessToken(getRefreshToken() || '');
-            
-            axios.defaults.headers.common.Authorization = 'Bearer ' + accessToken;
-            setAccessToken(accessToken);
-            setRefreshToken(refreshToken);
-            return axiosInstance(originalRequest)
+                originalRequest._retry = true;
+                const {accessToken, refreshToken} = await refreshAccessToken(getRefreshToken() || '');
+                
+                axios.defaults.headers.common.Authorization = 'Bearer ' + accessToken;
+                setAccessToken(accessToken);
+                setRefreshToken(refreshToken);
+                return axiosInstance(originalRequest)
+            }
         }
         return Promise.reject(error)
     }

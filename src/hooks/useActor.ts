@@ -13,11 +13,11 @@ export const useActor = (location:any ,dispatch:any,type:(string | null) = null,
         error: actorError,
         mutate: reloadActor
     } = useSWR(
-       ((location.pathname === "/films" || location.pathname === "/actors") && getAccessToken()) ? [search === null ? '/actors?page=1&limit=100' :`/actors?page=1&limit=100&${type}=${search}`, getAccessToken()] : null ,fetcher)
+       ((location.pathname === "/listings" || location.pathname === "/listing_categories") && getAccessToken()) ? [search === null ? '/categoryListing?page=1&limit=100' :`/categoryListing?page=1&limit=100&${type}=${search}`, getAccessToken()] : null ,fetcher)
        useEffect(()=>{
         const a = async ()=>{
             const newActor = await reloadActor();
-            console.log(newActor)
+            console.log("newActor:", newActor)
          if(actors){  
              if(!search){
                 

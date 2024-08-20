@@ -5,34 +5,36 @@ import {Table} from '../components/common/table'
 import { SearchLayout } from 'components/Search';
 import { Box,Button } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import {deleteCategory} from "../components/common/table/action";
 import {  GridValueGetterParams,GridActionsCellItem} from '@mui/x-data-grid';
 import { setField, setReset, setDetail } from 'reducers/Film';
-const Cateogories = () => {
-  const categories = useAppSelector((state:any)=>state.category.categories);
+import { deleteNews, deleteNewsCategory } from '../components/common/table/action';
+const NewsCategory = () => {
+  const news = useAppSelector((state:any)=>state.news_category.News_category);
   const dispatch = useAppDispatch();
+  console.log("news1:", news)
   const reset = useAppSelector((state:any)=>state.films.reset)
   const  columnsCategories = [
-    {field: 'name', headerName: 'Name', width: 300 },
+    {field: 'name', headerName: 'Tên', width: 300 },
+    {field: 'description', headerName: 'Mô tả', width: 300 },
     {
     field: 'actions',
     type: 'actions',
-    headerName: 'Action',
+    headerName: 'Hành động',
     width: 400,
     getActions: (params:any) => [
      
       <GridActionsCellItem
       key={1}
-      icon={ <Button variant="contained" color="success">Delete</Button>}
+      icon={ <Button variant="contained" color="success">Xóa</Button>}
       label="Delete"
       onClick={async()=> {
-        await deleteCategory(params.id);
+        await deleteNewsCategory(params.id);
         dispatch(setReset(!reset))
       }}
     />,
     <GridActionsCellItem
     key={2}
-    icon={ <Button variant="contained" color="secondary">Edit</Button>}
+    icon={ <Button variant="contained" color="secondary">Sửa</Button>}
     label="Edit"
     onClick={async()=> {
 
@@ -42,7 +44,7 @@ const Cateogories = () => {
   />,
    <GridActionsCellItem
    key={3}
-   icon={ <Button variant="contained" >Detail</Button>}
+   icon={ <Button variant="contained" >Xem chi tiết</Button>}
    label="Detail"
    onClick={async()=> {
 
@@ -54,14 +56,14 @@ const Cateogories = () => {
   },
   ]
   return <>
-    <HeaderCommon title="Categories">
-      <SearchLayout layout="categories"/>
+    <HeaderCommon title="Thể loại tin tức">
+      <SearchLayout layout="NewsCateogry"/>
       <Box sx={{width: "100%", marginTop: "20px", textAlign: "end"}}>
-      <Button variant="contained" color="success" onClick={()=> dispatch(setField("create"))} >Create</Button>
+      <Button variant="contained" color="success" onClick={()=> dispatch(setField("create"))} >Thêm</Button>
       </Box>
-      {categories && <Table title="Categories" data={categories}  column = {columnsCategories}/>}
+      {news && <Table title="Thể loại tin tức" data={news}  column = {columnsCategories}/>}
     </HeaderCommon>
   </>;
 };
 
-export default Cateogories;
+export default NewsCategory;

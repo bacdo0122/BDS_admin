@@ -12,7 +12,7 @@ export const useUser = (location:any ,dispatch:any,type:(string | null) = null, 
         error: userError,
         mutate: reloadUser
     } = useSWR(
-       ((location.pathname === "/users" ) && getAccessToken()) ? [search === null ? '/user/allUser/?page=1&limit=100' :`/user/allUser/?page=1&limit=100&${type}=${search}`, getAccessToken()] : null ,fetcher)
+       ((location.pathname === "/users" || location.pathname === "/" ) && getAccessToken()) ? [search === null ? '/user/getUsers/?page=1&limit=100' :`/user/getUsers/?page=1&limit=100&${type}=${search}`, getAccessToken()] : null ,fetcher)
        useEffect(()=>{
         const a = async ()=>{
             const newUser = await reloadUser();
@@ -20,6 +20,7 @@ export const useUser = (location:any ,dispatch:any,type:(string | null) = null, 
             if(!search){
                 dispatch(setAllUser(newUser.data))
             }
+     
              dispatch(setUserFilter(newUser.data))
          }
        

@@ -33,11 +33,6 @@ const ErrorText = styled(Typography)<TypographyProps>({
   fontWeight: 400,
 });
 
-
-interface AxiosData {
-  accessToken: string;
-  refreshToken: string;
-}
 interface LoginInputs {
   email: string;
   password: string;
@@ -64,7 +59,6 @@ const Login = () => {
     
     
     try {
-     
       const {accessToken, refreshToken} = await ExecLogin(email, password);
       
       setAccessToken(accessToken);
@@ -111,7 +105,7 @@ const Login = () => {
                 opacity: '0.7',
               }}
             >
-              Popcorn Admin
+              Quản lý bất động sản
             </Box>
             <Box
               component="span"
@@ -125,7 +119,7 @@ const Login = () => {
                 marginTop: '15px',
               }}
             >
-              Enter your email and password below
+              Nhập email và mật khẩu của bạn
             </Box>
             <Box component="form" noValidate sx={{ mt: 1 }}>
               <UserInput
@@ -134,9 +128,9 @@ const Login = () => {
                 name="email"
                 label="Email"
                 control={control}
-                placeholder="Enter your email"
+                placeholder="Nhập email của bạn"
               />
-              <PasswordInput name="password" label="Password" control={control} placeholder="Enter your password" />
+              <PasswordInput name="password" label="Password" control={control} placeholder="Nhập mật khẩu của bạn" />
               
               <Box sx={{ mt: 1, display: 'flex', justifyContent: 'flex-end' }}>
                 <Link
@@ -151,7 +145,7 @@ const Login = () => {
                     textDecoration: 'none',
                   }}
                 >
-                  Forgot password?
+                 Quên mật khẩu?
                 </Link>
               </Box>
               {submitErr && <ErrorText mt={1}>{submitErr}</ErrorText>}
@@ -159,7 +153,7 @@ const Login = () => {
               disabled={!isValid}
               onClick={handleSubmit(handleLogin)}
               fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-                Log In
+               Đăng nhập
               </Button>
             </Box>
           </Box>

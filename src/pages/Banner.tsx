@@ -5,50 +5,15 @@ import {Table} from '../components/common/table'
 import { SearchLayout } from 'components/Search';
 import { Box,Button } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import {deleteUser} from "../components/common/table/action";
 import {  GridValueGetterParams,GridActionsCellItem} from '@mui/x-data-grid';
 import { setField, setReset, setDetail } from 'reducers/Film';
-const Film = () => {
-  const films = useAppSelector((state:any)=>state.films.films);
+const Banners = () => {
+  const banners = useAppSelector((state:any)=>state.banner.banner);
   const dispatch = useAppDispatch();
-  const reset = useAppSelector((state:any)=>state.films.reset)
-  const  columnsFilm = [
-    {field: 'name', headerName: 'Name', width: 300 },
-    { field: 'actors', headerName: 'Actor', width: 200,
-    valueGetter: (params: GridValueGetterParams) =>
-    {
-      const covert = params.row.actors.map((actor:any)=>actor.name)
-
-      return covert.join(",")
-    }
-  },
-  { field: 'categories', headerName: 'Category', width: 200,
-  valueGetter: (params: GridValueGetterParams) =>
-  {
-    const covert = params.row.categories.map((category:any)=>category.name)
-
-    return covert.join(",")
-  }
-},
-{ field: 'bannerType', headerName: 'Banner', width: 200,
-valueGetter: (params: GridValueGetterParams) =>
-{
-  const covert = params.row.bannerType.map((category:any)=>category.name)
-
-  return covert.join(",")
-}
-},
-{ field: 'areas', headerName: 'Region', width: 150,
-valueGetter: (params: GridValueGetterParams) =>
-{
-  const covert = JSON.parse(params.row.areas).map((area:any)=>area.name)
-
-    return covert.join(",")
   
-}
-},
-    { field: 'score', headerName: 'Score Rate', width: 150 },
-    { field: 'year', headerName: 'Year', width: 100 },
+  const reset = useAppSelector((state:any)=>state.films.reset)
+  const  columnsCategories = [
+    {field: 'name', headerName: 'Name', width: 300 },
     {
     field: 'actions',
     type: 'actions',
@@ -61,7 +26,6 @@ valueGetter: (params: GridValueGetterParams) =>
       icon={ <Button variant="contained" color="success">Delete</Button>}
       label="Delete"
       onClick={async()=> {
-        await deleteUser(params.id);
         dispatch(setReset(!reset))
       }}
     />,
@@ -89,14 +53,14 @@ valueGetter: (params: GridValueGetterParams) =>
   },
   ]
   return <>
-    <HeaderCommon title="Films">
-      <SearchLayout layout="films"/>
+    <HeaderCommon title="Banners">
+      <SearchLayout layout="banners"/>
       <Box sx={{width: "100%", marginTop: "20px", textAlign: "end"}}>
       <Button variant="contained" color="success" onClick={()=> dispatch(setField("create"))} >Create</Button>
       </Box>
-      {films && <Table title="Films" data={films}  column = {columnsFilm}/>}
+      {banners && <Table title="Banners" data={banners}  column = {columnsCategories}/>}
     </HeaderCommon>
   </>;
 };
 
-export default Film;
+export default Banners;

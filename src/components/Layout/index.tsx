@@ -17,16 +17,34 @@ import { Pop } from 'components/common/Pop';
 import { useCategory } from 'hooks/useCategory';
 import { Edit } from 'components/common/Pop/edit';
 import { Detail } from 'components/common/Pop/detail';
-import { CreateActor } from 'components/common/actor/create';
-import { EditActor } from '../common/actor/edit';
-import { DetailActor } from 'components/common/actor/detail';
-import { CreateCategory } from 'components/common/category/create';
-import { EditCategory } from 'components/common/category/edit';
-import { DetaiCategory } from 'components/common/category/detail';
+import {  CreateListingCateogry } from 'components/common/listingCategory/create';
+import { EditActor } from '../common/listingCategory/edit';
+import { DetailActor } from 'components/common/listingCategory/detail';
+import { CreateListingType } from 'components/common/category/create';
+import {  EditListingType } from 'components/common/category/edit';
+import {  DetailListingType } from 'components/common/category/detail';
 import { CreateUser } from 'components/common/user/create';
 import { EditUser } from 'components/common/user/edit';
 import { DetailUser } from 'components/common/user/detail';
 import { useBanner } from 'hooks/useBanner';
+import { CreateBanner } from '../common/news/create';
+import { EditBanner } from '../common/news/edit';
+import { DetailBanner } from '../common/news/detail';
+import { useNews } from '../../hooks/useNews';
+import { useNewsCategory } from '../../hooks/useNewsCategory';
+import { useRegion } from '../../hooks/useRegion';
+import { CreateNewsCategory } from '../common/newsCategory/create';
+import { EditNewsCategory } from '../common/newsCategory/edit';
+import { DetailNewsCategory } from '../common/newsCategory/detail';
+import { CreateRegion } from '../common/region/create';
+import { EditRegion } from '../common/region/edit';
+import { DetailRegion } from '../common/region/detail';
+import { CreateReview } from '../common/review/create';
+import { EditReview } from '../common/review/edit';
+import { DetailReview } from '../common/review/detail';
+import { useDistrict } from '../../hooks/useDistrict';
+import { useWard } from '../../hooks/useWard';
+import { useDirection } from '../../hooks/useDirection';
 
 
 interface Props {
@@ -79,7 +97,13 @@ const Layout: React.FC<Props> = ({ children }) => {
   useCategory(location, dispatch);
   useActor(location, dispatch);
   useUser(location, dispatch);
-  useBanner(location, dispatch)
+  useNewsCategory(location, dispatch);
+  useBanner(location, dispatch);
+  useNews(location, dispatch);
+  useRegion(location, dispatch);
+  useDistrict(location, dispatch);
+  useWard(location,dispatch);
+  useDirection(location, dispatch)
  const renderLayout = () => {
     if (publicRouters.includes(location.pathname)) {
       return isAuthenticated !== null && !isAuthenticated ? (
@@ -101,27 +125,35 @@ const Layout: React.FC<Props> = ({ children }) => {
           </MainLayout>
           {field === "create" && 
           <PopUpLayout>
-            {location.pathname === "/films" && <Pop />}
-            {location.pathname === "/actors" && <CreateActor />}
-            {location.pathname === "/categories" && <CreateCategory />}
+            {location.pathname === "/listings" && <Pop />}
+            {location.pathname === "/listing_categories" && <CreateListingCateogry />}
+            {location.pathname === "/listing_types" && <CreateListingType />}
+            {location.pathname === "/news" && <CreateBanner />}
+            {location.pathname === "/news_category" && <CreateNewsCategory />}
             {location.pathname === "/users" && <CreateUser />}
+            {location.pathname === "/regions" && <CreateRegion />}
           </PopUpLayout>
           }
           {field === "edit" && 
           <PopUpLayout>
-             {location.pathname === "/films" && <Edit />}
-            {location.pathname === "/actors" && <EditActor />}
-            {location.pathname === "/categories" && <EditCategory />}
+             {location.pathname === "/listings" && <Edit />}
+            {location.pathname === "/listing_categories" && <EditActor />}
+            {location.pathname === "/listing_types" && <EditListingType  />}
             {location.pathname === "/users" && <EditUser />}
-            
+            {location.pathname === "/news_category" && <EditNewsCategory />}
+            {location.pathname === "/news" && <EditBanner />}
+            {location.pathname === "/regions" && <EditRegion />}
           </PopUpLayout>
           }
           {field === "detail" && 
           <PopUpLayout>
-              {location.pathname === "/films" &&  <Detail />}
-            {location.pathname === "/actors" && <DetailActor />}
-            {location.pathname === "/categories" && <DetaiCategory />}
+              {location.pathname === "/listings" &&  <Detail />}
+            {location.pathname === "/listing_categories" && <DetailActor />}
+            {location.pathname === "/listing_types" && <DetailListingType  />}
             {location.pathname === "/users" && <DetailUser />}
+            {location.pathname === "/news_category" && <DetailNewsCategory />}
+            {location.pathname === "/news" && <DetailBanner />}
+            {location.pathname === "/regions" && <DetailRegion />}
           </PopUpLayout>
           }
           

@@ -1,7 +1,6 @@
 import  React,{useRef, useState} from 'react';
 import { styled, Box, BoxProps, TextField,alpha,FormControl, Button, InputLabel } from '@mui/material'
 import { useAppDispatch, useAppSelector } from 'stores/hook';
-import { EditExisActor } from 'apis/actor';
 import { setField, setReset } from 'reducers/Film';
 import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
 import dayjs, { Dayjs } from 'dayjs';
@@ -79,7 +78,7 @@ const CloseIcon = styled(Box)<BoxProps>({
 
 })
 
-export const DetailActor = ()=>{
+export const DetailBanner = ()=>{
     const dispatch = useAppDispatch();
     const detail = useAppSelector((state:any)=>state.films.detail)
   
@@ -87,33 +86,24 @@ export const DetailActor = ()=>{
     
     return <Container>
             <MainWrapper>
-                <Label>Detail Actor</Label>
+                <Label>Detail Banner</Label>
               <FormControl variant="standard" sx={{width: "100%", marginTop:"10px"}}>
                 <InputLabel shrink htmlFor="bootstrap-input">
-                Name
+                Title
                 </InputLabel>
-                <BootstrapInput value={detail.name} disabled placeholder='Enter Name' id="bootstrap-input" />
-            </FormControl>
-            <FormControl variant="standard"  sx={{width: "100%", marginTop:"20px"}}>
-            
-                    <LocalizationProvider  dateAdapter={AdapterDayjs}>
-                    <Stack spacing={3}>
-                        <DesktopDatePicker
-                        label="Birth Day"
-                        inputFormat="MM/DD/YYYY"
-                        value={detail.bod}
-                        disabled
-                        onChange={()=>console.log("a")}
-                        renderInput={(params) => <TextField {...params} />}
-                        />
-                    </Stack>
-                    </LocalizationProvider>
+                <BootstrapInput value={detail.title} disabled placeholder='Enter Name' id="bootstrap-input" />
             </FormControl>
             <FormControl variant="standard" sx={{width: "100%", marginTop:"10px"}}>
                 <InputLabel shrink htmlFor="bootstrap-input">
-                Description
+                Content
                 </InputLabel>
-                <BootstrapInput value={detail.descriptions} disabled  placeholder='Enter Description' id="bootstrap-input" />
+                <BootstrapInput value={detail.content} disabled placeholder='Enter Name' id="bootstrap-input" />
+            </FormControl>
+            <FormControl variant="standard" sx={{width: "100%", marginTop:"10px"}}>
+                <InputLabel shrink htmlFor="bootstrap-input">
+                UserId
+                </InputLabel>
+                <BootstrapInput value={detail.userId} disabled placeholder='Enter Name' id="bootstrap-input" />
             </FormControl>
                        
             </MainWrapper>

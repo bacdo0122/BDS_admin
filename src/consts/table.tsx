@@ -25,9 +25,8 @@ export const  columns = [
       valueGetter: (params: GridValueGetterParams) =>
       {
    
-        const covert = JSON.parse(params.row.areas).map((area:any)=>area.name)
 
-        return covert.join(",")
+        return params.row.areas
       }
     },
     

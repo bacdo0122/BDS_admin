@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { styled, Box, BoxProps, TextField, TextareaAutosize, alpha, FormControl, Button, InputLabel, List, ListItem, ListItemButton, ListItemText } from '@mui/material'
+import { styled, Box, BoxProps, TextField, TextareaAutosize, alpha, FormControl, Button, InputLabel, List, ListItem, ListItemButton, ListItemText, Autocomplete, ListItemIcon } from '@mui/material'
 import { useAppDispatch, useAppSelector } from 'stores/hook';
-import { EditFilm } from 'apis/film';
 import { setField, setReset } from 'reducers/Film';
 import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
 const Container = styled(Box)<BoxProps>({
@@ -77,91 +76,170 @@ export const Detail = () => {
     const detail = useAppSelector((state: any) => state.films.detail)
 
     const [film, setFilm] = useState({
-        id: detail && detail.id,
-        name: detail && detail.name,
-        filmId: detail && String(detail.filmId),
-        domainType: detail && String(detail.domainType),
-        description: detail && String(detail.description),
-        actor: detail && detail.actors,
-        category: detail && detail.categories
+        BSDId: detail && detail.id,
+        userId: detail && detail.user.id,
+        price: detail && detail.price,
+        regionId: detail && detail.regionId,
+        title: detail && detail.title,
+        description: detail && detail.description,
+        address: detail && detail.address,
+        area: detail && detail.area,
+        status_listing: detail && detail.status_listing,
+        legal_status: detail && detail.legal_status,
+        furnishing: detail && detail.furnishing,
+        orientation: detail && detail.orientation,
+        bedrooms: detail && detail.bedrooms,
+        bathrooms: detail && detail.bathrooms,
+        types: detail.type.length && detail.type.map((item: any) => {
+         return { id: item.id, label: item.name }
+        }),
+        categories: detail.category.length && detail.category.map((item: any) => {
+          return { id: item.id, label: item.name }
+         }),
     })
 
 
 
 
     return <Container>
-        <MainWrapper>
-            <Label>Detail Film</Label>
-            <FormControl variant="standard" sx={{ width: "100%", marginTop: "10px" }}>
+         <MainWrapper>
+                <Label>Detail Listing</Label>
+              <FormControl variant="standard" sx={{width: "100%", marginTop:"10px"}}>
                 <InputLabel shrink htmlFor="bootstrap-input">
-                    Name
+                BSDId
                 </InputLabel>
-                <BootstrapInput disabled value={film.name} onChange={(e: any) => setFilm({ ...film, name: e.target.value })} placeholder='Enter Name' id="bootstrap-input" />
+                <BootstrapInput value={film.BSDId} disabled placeholder='Enter BSDId' id="bootstrap-input" />
             </FormControl>
-            <FormControl variant="standard" sx={{ width: "100%", marginTop: "10px" }}>
+            <FormControl variant="standard" sx={{width: "100%", marginTop:"10px"}}>
                 <InputLabel shrink htmlFor="bootstrap-input">
-                    ID
+                userId
                 </InputLabel>
-                <BootstrapInput disabled value={film.filmId} onChange={(e: any) => setFilm({ ...film, filmId: e.target.value })} type='number' placeholder='Enter ID' id="bootstrap-input" />
+                <BootstrapInput disabled value={film.userId}  type='number' placeholder='Enter userId' id="bootstrap-input"  />
             </FormControl>
-            <FormControl variant="standard" sx={{ width: "100%", marginTop: "10px" }}>
+            <FormControl variant="standard" sx={{width: "100%", marginTop:"10px"}}>
                 <InputLabel shrink htmlFor="bootstrap-input">
-                    Domain Type
+                regionId
                 </InputLabel>
-                <BootstrapInput disabled value={film.domainType} onChange={(e: any) => setFilm({ ...film, domainType: e.target.value })} type='number' placeholder='Enter Domain Type' id="bootstrap-input" />
+                <BootstrapInput disabled value={film.regionId} placeholder='Enter regionId' id="bootstrap-input" />
             </FormControl>
-            <FormControl variant="standard" sx={{ width: "100%", marginTop: "10px" }}>
+            <FormControl variant="standard" sx={{width: "100%", marginTop:"10px"}}>
                 <InputLabel shrink htmlFor="bootstrap-input">
-                    Description
+                title
                 </InputLabel>
-                <TextareaAutosize
-                    minRows={8}
-                    value={film.description}
-                    disabled
-                    style={{ width: '100%', fontSize: "16px", marginTop: "15px" }}
-                />
+                <BootstrapInput disabled value={film.title} placeholder='Enter title' id="bootstrap-input" />
             </FormControl>
-            <FormControl variant="standard" sx={{ width: "100%", marginTop: "10px" }}>
+            <FormControl variant="standard" sx={{width: "100%", marginTop:"10px"}}>
                 <InputLabel shrink htmlFor="bootstrap-input">
-                    Actors
+                Description
                 </InputLabel>
+                <BootstrapInput disabled value={film.description}  placeholder='Enter Description' id="bootstrap-input" />
+            </FormControl>
+            <FormControl variant="standard" sx={{width: "100%", marginTop:"10px"}}>
+                <InputLabel shrink htmlFor="bootstrap-input">
+                Description
+                </InputLabel>
+                <BootstrapInput disabled value={film.description}  placeholder='Enter Description' id="bootstrap-input" />
+            </FormControl>
+
+            <FormControl variant="standard" sx={{width: "100%", marginTop:"10px"}}>
+                <InputLabel shrink htmlFor="bootstrap-input">
+                Address
+                </InputLabel>
+                <BootstrapInput disabled value={film.address}  placeholder='Enter Address' id="bootstrap-input" />
+            </FormControl>
+
+            <FormControl variant="standard" sx={{width: "100%", marginTop:"10px"}}>
+                <InputLabel shrink htmlFor="bootstrap-input">
+                Area
+                </InputLabel>
+                <BootstrapInput disabled value={film.area}  placeholder='Enter Area' id="bootstrap-input" />
+            </FormControl>
+
+            <FormControl variant="standard" sx={{width: "100%", marginTop:"10px"}}>
+                <InputLabel shrink htmlFor="bootstrap-input">
+                status_listing
+                </InputLabel>
+                <BootstrapInput disabled value={film.status_listing}  placeholder='Enter status_listing' id="bootstrap-input" />
+            </FormControl>
+
+            <FormControl variant="standard" sx={{width: "100%", marginTop:"10px"}}>
+                <InputLabel shrink htmlFor="bootstrap-input">
+                status_listing
+                </InputLabel>
+                <BootstrapInput disabled value={film.legal_status}  placeholder='Enter legal_status' id="bootstrap-input" />
+            </FormControl>
+
+            <FormControl variant="standard" sx={{width: "100%", marginTop:"10px"}}>
+                <InputLabel shrink htmlFor="bootstrap-input">
+                furnishing
+                </InputLabel>
+                <BootstrapInput disabled value={film.furnishing}  placeholder='Enter furnishing' id="bootstrap-input" />
+            </FormControl>
+
+            <FormControl variant="standard" sx={{width: "100%", marginTop:"10px"}}>
+                <InputLabel shrink htmlFor="bootstrap-input">
+                orientation
+                </InputLabel>
+                <BootstrapInput disabled value={film.orientation}  placeholder='Enter orientation' id="bootstrap-input" />
+            </FormControl>
+
+            <FormControl variant="standard" sx={{width: "100%", marginTop:"10px"}}>
+                <InputLabel shrink htmlFor="bootstrap-input">
+                bathrooms
+                </InputLabel>
+                <BootstrapInput disabled value={film.bathrooms}  placeholder='Enter bathrooms' id="bootstrap-input" />
+            </FormControl>
+
+            <FormControl variant="standard" sx={{width: "100%", marginTop:"10px"}}>
+                <InputLabel shrink htmlFor="bootstrap-input">
+                bedrooms
+                </InputLabel>
+                <BootstrapInput disabled value={film.bedrooms}  placeholder='Enter bedrooms' id="bootstrap-input" />
+            </FormControl>
+            
+            <FormControl variant="standard" sx={{width: "100%", marginTop:"10px"}}>     
+                 <BootstrapInput disabled placeholder='Enter types id' id="bootstrap-input" />
+                    </FormControl>
+                    <nav aria-label="secondary mailbox folders">
+                        <List>
+                            {film.types.length > 0 && film.types.map((item:any, index:number)=>(
+                                <ListItem disablePadding key={index}>
+                                <ListItemButton >
+                                    <ListItemText primary={item.label} />
+                                    <ListItemIcon>
+                                    </ListItemIcon>
+                                </ListItemButton>
+                            </ListItem>
+                            ))}
+                    
+                        </List>
+                    </nav>
+
+            <FormControl variant="standard" sx={{width: "100%", marginTop:"10px"}}>
+        
+            <BootstrapInput disabled placeholder='Enter categories' id="bootstrap-input" />
             </FormControl>
             <nav aria-label="secondary mailbox folders">
                 <List>
-                    {film.actor.length > 0 && film.actor.map((item: any, index: number) => (
-                        <ListItem disabled disablePadding key={index}>
-                            <ListItemButton >
-                                <ListItemText primary={item.name} />
-
-                            </ListItemButton>
-                        </ListItem>
+                    {film.categories.map((item:any)=>(
+                        
+                           <ListItem disablePadding key={item.id}>
+                           <ListItemButton>
+                           <ListItemText primary={item.label} />
+                           <ListItemIcon>
+                            </ListItemIcon>
+                           </ListItemButton>
+                       </ListItem>
                     ))}
-
+             
                 </List>
             </nav>
-            <FormControl variant="standard" sx={{ width: "100%", marginTop: "10px" }}>
-                <InputLabel shrink htmlFor="bootstrap-input">
-                    Categories
-                </InputLabel>
-
-            </FormControl>
-            <nav aria-label="secondary mailbox folders">
-                <List>
-                    {film.category.length > 0 && film.category.map((item: any, index: number) => (
-                        <ListItem disablePadding disabled key={item.id}>
-                            <ListItemButton>
-                                <ListItemText primary={item.name} />
-
-                            </ListItemButton>
-                        </ListItem>
-                    ))}
-
-                </List>
-            </nav>
-        </MainWrapper>
-        <CloseIcon>
-            <HighlightOffOutlinedIcon onClick={() => dispatch(setField(null))} />
-        </CloseIcon>
+        
+                            
+            </MainWrapper>
+           <CloseIcon>
+            <HighlightOffOutlinedIcon onClick={()=>  dispatch(setField(null))}/>
+           </CloseIcon>
     </Container>
 
 }

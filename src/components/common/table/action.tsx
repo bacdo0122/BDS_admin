@@ -3,25 +3,57 @@ import React, { useEffect } from 'react';
 import { setReset } from 'reducers/Film';
 export const deleteUser =  async (id:number )=>{
 
-    await axiosInstance.post("/films/delete",{
-        id
+    await axiosInstance.post("/listing/delete",{
+        id: id
     });
    
 }
-export const deleteActor =  async (id:number )=>{
+export const deleteCategoryListing =  async (id:number )=>{
 
-    await axiosInstance.post("/actors/delete",{
+    await axiosInstance.post("/categoryListing/delete",{
         id
     });
    
 }
-export const deleteCategory =  async (id:number )=>{
+export const deleteTypeListing =  async (id:number )=>{
 
-    await axiosInstance.post("/categories/delete",{
+    await axiosInstance.post("/typeListing/delete",{
         id
     });
    
 }
+export const deleteNews =  async (id:number )=>{
+
+    await axiosInstance.post("/news/delete",{
+        id
+    });
+   
+}
+
+export const deleteNewsCategory =  async (id:number )=>{
+
+    await axiosInstance.post("/categoryNews/delete",{
+        id
+    });
+   
+}
+
+export const deleteRegion =  async (id:number )=>{
+
+    await axiosInstance.post("/region/delete",{
+        id
+    });
+   
+}
+
+export const deleteReview =  async (id:number )=>{
+
+    await axiosInstance.post("/Review/delete",{
+        id
+    });
+   
+}
+
 export const deleteUserAdmin =  async (id:number )=>{
 
     await axiosInstance.post("/user/delete",{

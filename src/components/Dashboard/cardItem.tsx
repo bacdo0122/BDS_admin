@@ -2,17 +2,17 @@ import * as React from 'react';
 import {styled, Box, BoxProps} from '@mui/material'
  interface Props {
     title:string,
-    number:string
+    number:number
 }
 const CardWrapper = styled(Box)<BoxProps>({
     padding: "20px",
-    height: "100%",
-    width: 'calc(25% - 3rem)',
+    width: 'calc(33.33% - 3rem)',
     background: "#fff",
     display:"flex",
     flexDirection: "column",
     justifyContent: "space-between",
-    borderRadius: "8px"
+    borderRadius: "8px",
+    flex: '1 1 auto'
 })
 
 const TitleCard = styled(Box)<BoxProps>({

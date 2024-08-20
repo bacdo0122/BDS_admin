@@ -71,16 +71,16 @@ const CloseIcon = styled(Box)<BoxProps>({
 
 })
 
-export const DetaiCategory = ()=>{
+export const DetailListingType = ()=>{
   const dispatch = useAppDispatch();
   const detail = useAppSelector((state:any)=>state.films.detail)
 
   return <Container>
           <MainWrapper>
-              <Label>Detail Category</Label>
+              <Label>Detail Listing Type</Label>
             <FormControl variant="standard" sx={{width: "100%", marginTop:"10px"}}>
               <InputLabel shrink htmlFor="bootstrap-input">
-              Name
+              ID
               </InputLabel>
               <BootstrapInput disabled value={detail.id}  placeholder='Enter Name' id="bootstrap-input" />
           </FormControl>
@@ -89,6 +89,13 @@ export const DetaiCategory = ()=>{
               Name
               </InputLabel>
               <BootstrapInput disabled value={detail.name}  placeholder='Enter Name' id="bootstrap-input" />
+          </FormControl>
+
+          <FormControl variant="standard" sx={{width: "100%", marginTop:"10px"}}>
+              <InputLabel shrink htmlFor="bootstrap-input">
+              Description
+              </InputLabel>
+              <BootstrapInput disabled value={detail.description}  placeholder='Enter Description' id="bootstrap-input" />
           </FormControl>
          
                    

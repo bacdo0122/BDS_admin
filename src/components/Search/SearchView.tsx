@@ -7,6 +7,10 @@ import { useLocation } from 'react-router-dom';
 import { useActor } from 'hooks/useActor';
 import { useCategory } from 'hooks/useCategory';
 import { useUser } from 'hooks/useUser';
+import { useBanner } from '../../hooks/useBanner';
+import { useNews } from '../../hooks/useNews';
+import { useNewsCategory } from '../../hooks/useNewsCategory';
+import { useRegion } from '../../hooks/useRegion';
 
 
 const Wrapper = styled(Box)<BoxProps>({
@@ -20,41 +24,58 @@ export const SearchView = (layout:any) => {
     value: null
   })
   const [option, setOption] = React.useState([])
-  const actors= useAppSelector((state:any)=> state.actor.actors)
   const allActor= useAppSelector((state:any)=> state.actor.allActor)
   const allCategory = useAppSelector((state:any)=> state.category.allCategory)
   const allUser = useAppSelector((state:any)=>state.user.allUser)
+  const allBanner = useAppSelector((state:any)=>state.banner.allBanner)
   const location = useLocation();
   const dispatch = useAppDispatch();
   React.useEffect(()=>{
 
-    if(layout.layout === "films" || layout.layout === "actors"){
+    if(layout.layout === "listings" || layout.layout === "actors"){
       setOption(allActor)
     }
     else if(layout.layout === "categories"){
       setOption(allCategory)
     }
+    else if(layout.layout === 'banners'){
+      setOption(allBanner)
+    }
     else setOption(allUser)
   },[layout])
-  if(layout.layout === "films"){
+  if(layout.layout === "listings"){
   
     useFetchMostViewFilm(location, dispatch, search.type, search.value) 
   }
-  else if(layout.layout === "actors"){
+  else if(layout.layout === "listing_categories"){
  
     useActor(location, dispatch, search.type, search.value) 
   }
-  else if(layout.layout === "categories"){
+  else if(layout.layout === "listing_types"){
 
     useCategory(location, dispatch, search.type, search.value) 
   }
+  else if(layout.layout === "banners"){
+
+    useBanner(location, dispatch, search.type, search.value) 
+  }
+  else if(layout.layout === "News"){
+
+    useNews(location, dispatch, search.type, search.value) 
+  }  else if(layout.layout === "NewsCateogry"){
+
+    useNewsCategory(location, dispatch, search.type, search.value) 
+  } else if(layout.layout === "Regions"){
+
+    useRegion(location, dispatch, search.type, search.value) 
+  } 
   else{
 
     useUser(location, dispatch, search.type, search.value) 
   }
   const handleKeyPress = (e:any)=>{
       if(e.key === "Enter"){
-       
+        console.log("value:", e.target.value)
         setSearch({
           type:"search",
           value: e.target.value
@@ -62,9 +83,9 @@ export const SearchView = (layout:any) => {
       }
     }
    
-  const handleChangeActor = (event:any, value:any)=>{
+  const handleChange = (event:any, value:any)=>{
     if(event.target.value !== undefined){
-     if(layout.layout === "films"){
+     if(layout.layout === "listings"){
       setSearch({
         type:"actors",
         value: value.id
@@ -95,7 +116,7 @@ export const SearchView = (layout:any) => {
  return (
     <Wrapper>
       <TextField
-        label="Search"
+        label="Tìm kiếm"
         onKeyPress={handleKeyPress}
         sx={{ width: "350px", marginRight: "20px" }}
         InputProps={{
@@ -106,14 +127,14 @@ export const SearchView = (layout:any) => {
           )
         }}
       />
-       <Autocomplete
+       {/* <Autocomplete
       disablePortal
-      onChange={(event, value)=>handleChangeActor(event,value)}
+      onChange={(event, value)=>handleChange(event,value)}
       id="combo-box-demo"
       options={option && option.map((item:any)=>({id: item.id, label: item.name}))}
       sx={{ width: 300 }}
-      renderInput={(params:any) => <TextField {...params} label={layout.layout === "films" || layout.layout === "actors"  ? "Actor" : layout.layout} />}
-    />
+      renderInput={(params:any) => <TextField {...params} label={layout.layout} />}
+    /> */}
     </Wrapper>
   );
 }

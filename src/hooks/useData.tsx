@@ -11,16 +11,15 @@ const useFetchMostViewFilm = (location:any ,dispatch:any,type:(string | null) = 
         error: filmError,
         mutate: reloadFilm
     } = useSWR(
-       ((location.pathname === "/" || location.pathname === "/films")  && getAccessToken() ) ? [search === null ? '/films?page=1&limit=100' :`/films?page=1&limit=100&${type}=${search}`, getAccessToken()] : null ,fetcher)
-   
-    useEffect(()=>{
-       
-       const a = async ()=>{
-           const newFilm = await reloadFilm();
-        if(films){  
-            if(!search){
-                dispatch(setAllFilm(newFilm.data))
-            }
+       ((location.pathname === "/" || location.pathname === "/listings")  && getAccessToken() ) ? [search === null ? '/listing?page=1&limit=100' :`/listing?page=1&limit=100&${type}=${search}`, getAccessToken()] : null ,fetcher)
+       useEffect(()=>{
+           
+           const a = async ()=>{
+               const newFilm = await reloadFilm();
+               if(films){  
+                   if(!search){
+                       dispatch(setAllFilm(newFilm.data))
+                    }
              dispatch(setFilmMostView(newFilm.data))
         }
       

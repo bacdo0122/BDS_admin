@@ -1,7 +1,7 @@
 import  React,{useRef, useState} from 'react';
 import { styled, Box, BoxProps, TextField,alpha,FormControl, Button, InputLabel } from '@mui/material'
 import { useAppDispatch, useAppSelector } from 'stores/hook';
-import { CreateNewActor } from 'apis/actor';
+import { CreateNewListingCategory } from 'apis/actor';
 import { setField, setReset } from 'reducers/Film';
 import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
 import dayjs, { Dayjs } from 'dayjs';
@@ -12,6 +12,10 @@ import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { createActorSchema, CreateFilmSchema } from '../../../helpers/validation';
+import CreateFilmInput from '../../../Inputs/createFilmInput';
 const Container = styled(Box)<BoxProps>({
 
     width: "50%",
@@ -81,60 +85,58 @@ const CloseIcon = styled(Box)<BoxProps>({
 })
 interface Actor{
     name:string ,
-    bod: Dayjs | null ,
     description: string 
 }
-export const CreateActor = ()=>{
+export const CreateListingCateogry = ()=>{
     const dispatch = useAppDispatch();
     const reset = useAppSelector((state:any)=>state.films.reset)
     const [value, setValue] = React.useState<Actor>(
        {
         name: "",
-        bod: dayjs('2014-08-18T21:11:54'),
         description:""
        }
       )
+
+      const {
+        setError,
+        handleSubmit,
+        control,
+        formState: { errors, isDirty, isValid }
+      } = useForm<Actor>({
+        mode: 'onChange',
+        defaultValues: {
+          name: "",
+        description:""
+        },
+        resolver: yupResolver(createActorSchema),
+      });
     
-      const handleChange = (newValue: Dayjs | null) => {
-        setValue({...value, bod: newValue});
-      };
    const handleCreateActor = async ()=>{
-    const bd = (value.bod!.month() + 1) + "/" + (value.bod!.date() < 10 ? "0" + value.bod!.date()  : value.bod!.date() ) + "/" + value.bod!.year();
-    await CreateNewActor(value.name, bd,value.description);
+    await CreateNewListingCategory(value.name,value.description);
     dispatch(setField(null))
     dispatch(setReset(!reset))
    }
     return <Container>
             <MainWrapper>
-                <Label>Create Actor</Label>
+                <Label>Create Listing Category</Label>
               <FormControl variant="standard" sx={{width: "100%", marginTop:"10px"}}>
                 <InputLabel shrink htmlFor="bootstrap-input">
                 Name
                 </InputLabel>
-                <BootstrapInput value={value.name} onChange={(e:any)=> setValue({...value,name:e.target.value})} placeholder='Enter Name' id="bootstrap-input" />
-            </FormControl>
-            <FormControl variant="standard" sx={{width: "100%", marginTop:"20px"}}>
-            
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <Stack spacing={3}>
-                        <DesktopDatePicker
-                        label="Birth Day"
-                        inputFormat="MM/DD/YYYY"
-                        value={value.bod}
-                        onChange={handleChange}
-                        renderInput={(params) => <TextField {...params} />}
-                        />
-                    </Stack>
-                    </LocalizationProvider>
+                <CreateFilmInput 
+          onChange1={(e:any)=> setValue({ ...value, name: e.target.value })} requiredIcon name="name" label="Name" control={control} placeholder="Enter your name" />
+                {/* <BootstrapInput value={value.name} onChange={(e:any)=> setValue({...value,name:e.target.value})} placeholder='Enter Name' id="bootstrap-input" /> */}
             </FormControl>
             <FormControl variant="standard" sx={{width: "100%", marginTop:"10px"}}>
                 <InputLabel shrink htmlFor="bootstrap-input">
                 Description
                 </InputLabel>
-                <BootstrapInput value={value.description} onChange={(e:any)=> setValue({...value,description:e.target.value})} placeholder='Enter Description' id="bootstrap-input" />
+                <CreateFilmInput onChange1={(e:any)=> setValue({ ...value, description: e.target.value })} requiredIcon name="description" label="Description" control={control} placeholder="Enter Description " />
+
+                {/* <BootstrapInput value={value.description} onChange={(e:any)=> setValue({...value,description:e.target.value})} placeholder='Enter Description' id="bootstrap-input" /> */}
             </FormControl>
             
-            <Button variant="contained" onClick={handleCreateActor} sx={{marginTop: "10px"}}>Create</Button>              
+            <Button variant="contained"  disabled={!isValid} onClick={handleSubmit(handleCreateActor)} sx={{marginTop: "10px"}}>Create</Button>              
             </MainWrapper>
            <CloseIcon>
             <HighlightOffOutlinedIcon onClick={()=>  dispatch(setField(null))}/>

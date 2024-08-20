@@ -8,3 +8,16 @@ body {
   padding: 0;
   box-sizing: border-box;
 }
+
+/* styles.css */
+.chart-container {
+  width: 100vw; /* Toàn bộ chiều rộng của viewport */
+  height: 100vh; /* Toàn bộ chiều cao của viewport */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chart-container canvas {
+  width: 100% !important;
+}
