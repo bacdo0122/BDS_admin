@@ -78,7 +78,7 @@ const CloseIcon = styled(Box)<BoxProps>({
 
 })
 
-export const DetailBanner = ()=>{
+export const DetailWard = ()=>{
     const dispatch = useAppDispatch();
     const detail = useAppSelector((state:any)=>state.films.detail)
   
@@ -86,30 +86,18 @@ export const DetailBanner = ()=>{
     
     return <Container>
             <MainWrapper>
-                <Label>Detail Banner</Label>
+                <Label>Detail Ward</Label>
               <FormControl variant="standard" sx={{width: "100%", marginTop:"10px"}}>
                 <InputLabel shrink htmlFor="bootstrap-input">
-                Title
+                Name
                 </InputLabel>
-                <BootstrapInput value={detail.title} disabled placeholder='Enter Name' id="bootstrap-input" />
+                <BootstrapInput value={detail.name} disabled placeholder='Enter Name' id="bootstrap-input" />
             </FormControl>
             <FormControl variant="standard" sx={{width: "100%", marginTop:"10px"}}>
                 <InputLabel shrink htmlFor="bootstrap-input">
-                Content
+                DistrictId
                 </InputLabel>
-                <BootstrapInput value={detail.content} disabled placeholder='Enter Name' id="bootstrap-input" />
-            </FormControl>
-            <FormControl variant="standard" sx={{width: "100%", marginTop:"10px"}}>
-                <InputLabel shrink htmlFor="bootstrap-input">
-                UserId
-                </InputLabel>
-                <BootstrapInput value={detail.userId} disabled placeholder='Enter Name' id="bootstrap-input" />
-            </FormControl>
-            <FormControl variant="standard" sx={{width: "100%", marginTop:"10px"}}>
-                <InputLabel shrink htmlFor="bootstrap-input">
-                Category Id
-                </InputLabel>
-                <BootstrapInput value={detail.category_id} disabled placeholder='Enter Name' id="bootstrap-input" />
+                <BootstrapInput value={detail.districtId} disabled placeholder='Enter Name' id="bootstrap-input" />
             </FormControl>
                        
             </MainWrapper>

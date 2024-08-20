@@ -74,7 +74,6 @@ export const Detail = () => {
     const dispatch = useAppDispatch();
     const reset = useAppSelector((state: any) => state.films.reset)
     const detail = useAppSelector((state: any) => state.films.detail)
-
     const [film, setFilm] = useState({
         BSDId: detail && detail.id,
         userId: detail && detail.user.id,
@@ -90,16 +89,13 @@ export const Detail = () => {
         orientation: detail && detail.orientation,
         bedrooms: detail && detail.bedrooms,
         bathrooms: detail && detail.bathrooms,
-        types: detail.type.length && detail.type.map((item: any) => {
-         return { id: item.id, label: item.name }
-        }),
-        categories: detail.category.length && detail.category.map((item: any) => {
-          return { id: item.id, label: item.name }
-         }),
+        types: detail.type && { id: detail.type.id, label: detail.type.name },
+        categories: detail.category && { id: detail.category.id, label: detail.category.name },
     })
+    const [images, setImages] = useState(detail && detail.image.length > 1 ? detail.image.split(";") : [detail.image]);
 
 
-
+    console.log("detail:", detail)
 
     return <Container>
          <MainWrapper>
@@ -202,15 +198,13 @@ export const Detail = () => {
                     </FormControl>
                     <nav aria-label="secondary mailbox folders">
                         <List>
-                            {film.types.length > 0 && film.types.map((item:any, index:number)=>(
-                                <ListItem disablePadding key={index}>
+                        <ListItem disablePadding >
                                 <ListItemButton >
-                                    <ListItemText primary={item.label} />
+                                    <ListItemText primary={film.types.label} />
                                     <ListItemIcon>
                                     </ListItemIcon>
                                 </ListItemButton>
                             </ListItem>
-                            ))}
                     
                         </List>
                     </nav>
@@ -221,20 +215,52 @@ export const Detail = () => {
             </FormControl>
             <nav aria-label="secondary mailbox folders">
                 <List>
-                    {film.categories.map((item:any)=>(
-                        
-                           <ListItem disablePadding key={item.id}>
-                           <ListItemButton>
-                           <ListItemText primary={item.label} />
-                           <ListItemIcon>
-                            </ListItemIcon>
-                           </ListItemButton>
-                       </ListItem>
-                    ))}
+                <ListItem disablePadding >
+                                <ListItemButton >
+                                    <ListItemText primary={film.categories.label} />
+                                    <ListItemIcon>
+                                    </ListItemIcon>
+                                </ListItemButton>
+                            </ListItem>
              
                 </List>
             </nav>
         
+            <FormControl variant="standard" sx={{ width: '100%', marginTop: '5px' }}>
+          <InputLabel shrink htmlFor="image-upload" style={{top: "-10px"}}>
+            Upload Images
+          </InputLabel>
+          <input
+            type="file"
+            id="image-upload"
+            multiple
+            accept="image/*"
+            style={{ display: 'none' }}
+          />
+          <Button
+            variant="contained"
+            component="label"
+            htmlFor="image-upload"
+            style={{ marginTop: '10px', width: '100%' }}
+          >
+            Choose Images
+          </Button>
+        </FormControl>
+
+        <div style={{ marginTop: '20px' }}>
+          {images.length > 0 && (
+            <div>
+              {images.map((image: any, index:number) => (
+                <img
+                  key={index}
+                  src={`http://localhost:3000/assets/images/${image}`}
+                  alt={`preview-${index}`}
+                  style={{ width: '100px', height: '100px', margin: '5px' }}
+                />
+              ))}
+            </div>
+          )}
+        </div>
                             
             </MainWrapper>
            <CloseIcon>

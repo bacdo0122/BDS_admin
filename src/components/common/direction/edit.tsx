@@ -16,6 +16,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { createBannerSchema } from '../../../helpers/validation';
 import CreateFilmInput from '../../../Inputs/createFilmInput';
 import { EditExisNews } from '../../../apis/news';
+import { EditExisNewsCategory } from '../../../apis/newsCategory';
+import { EditExisRegion } from '../../../apis/region';
+import { EditExisDirection } from '../../../apis/direction';
 const Container = styled(Box)<BoxProps>({
   width: '50%',
   height: '80%',
@@ -77,21 +80,15 @@ const CloseIcon = styled(Box)<BoxProps>({
 });
 interface Banner {
   id: string;
-  content: string;
-  title: string;
-  userId: number;
-  category_id: number;
+  name: string;
 }
-export const EditBanner = () => {
+export const EditDirection = () => {
   const dispatch = useAppDispatch();
   const reset = useAppSelector((state: any) => state.films.reset);
   const detail = useAppSelector((state: any) => state.films.detail);
   const [value, setValue] = React.useState<Banner>({
     id: detail && detail.id,
-    title:detail && detail.title,
-    content:detail && detail.content,
-    userId: detail && detail.userId,
-    category_id: detail && detail.category_id,
+    name:detail && detail.name,
   });
   const {
     setError,
@@ -101,79 +98,31 @@ export const EditBanner = () => {
   } = useForm<Banner>({
     mode: 'onChange',
     defaultValues: {
-      title:detail && detail.title,
-      content:detail && detail.content,
-      userId: detail && detail.userId,
-      category_id: detail && detail.category_id,
+      name:detail && detail.name,
     },
     resolver: yupResolver(createBannerSchema),
   });
   const handleEditBanner = async () => {
-    await EditExisNews(value.id, value.title, value.content, value.userId, value.category_id);
+    await EditExisDirection(value.id, value.name);
     dispatch(setField(null));
     dispatch(setReset(!reset));
   };
   return (
     <Container>
       <MainWrapper>
-        <Label>Edit Banner</Label>
+        <Label>Edit News Direction</Label>
         <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
           <InputLabel shrink htmlFor="bootstrap-input">
-            Content
+          Name
           </InputLabel>
           <CreateFilmInput
-          defaultValue={value.content}
-            onChange1={(e: any) => setValue({ ...value, content: e.target.value })}
+          defaultValue={value.name}
+            onChange1={(e: any) => setValue({ ...value, name: e.target.value })}
             requiredIcon
-            name="content"
-            label="content"
+            name="name"
+            label="name"
             control={control}
-            placeholder="Enter your content"
-          />
-        </FormControl>
-        <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
-          <InputLabel shrink htmlFor="bootstrap-input">
-            Title
-          </InputLabel>
-          <CreateFilmInput
-                    defaultValue={value.title}
-            onChange1={(e: any) => setValue({ ...value, title: e.target.value })}
-            requiredIcon
-            name="title"
-            label="Title"
-            control={control}
-            placeholder="Enter your title"
-          />
-        </FormControl>
-        <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
-          <InputLabel shrink htmlFor="bootstrap-input">
-            User ID
-          </InputLabel>
-          <CreateFilmInput
-          type='number'
-          defaultValue={value.userId}
-            onChange1={(e: any) => setValue({ ...value, userId: e.target.value })}
-            requiredIcon
-            name="userId"
-            label="userId"
-            control={control}
-            placeholder="Enter your userId"
-          />
-        </FormControl>
-
-        <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
-          <InputLabel shrink htmlFor="bootstrap-input">
-            Category ID
-          </InputLabel>
-          <CreateFilmInput
-          type='number'
-          defaultValue={value.category_id}
-            onChange1={(e: any) => setValue({ ...value, category_id: e.target.value })}
-            requiredIcon
-            name="category_id"
-            label="category_id"
-            control={control}
-            placeholder="Enter your category_id"
+            placeholder="Enter your name"
           />
         </FormControl>
 

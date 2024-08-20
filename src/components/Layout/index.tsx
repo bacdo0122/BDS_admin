@@ -27,7 +27,7 @@ import { CreateUser } from 'components/common/user/create';
 import { EditUser } from 'components/common/user/edit';
 import { DetailUser } from 'components/common/user/detail';
 import { useBanner } from 'hooks/useBanner';
-import { CreateBanner } from '../common/news/create';
+import {  CreateNews } from '../common/news/create';
 import { EditBanner } from '../common/news/edit';
 import { DetailBanner } from '../common/news/detail';
 import { useNews } from '../../hooks/useNews';
@@ -45,6 +45,15 @@ import { DetailReview } from '../common/review/detail';
 import { useDistrict } from '../../hooks/useDistrict';
 import { useWard } from '../../hooks/useWard';
 import { useDirection } from '../../hooks/useDirection';
+import { CreateDirection } from '../common/direction/create';
+import { EditDirection } from '../common/direction/edit';
+import { DetailDirection } from '../common/direction/detail';
+import { EditDistrict } from '../common/district/edit';
+import { DetailDistrict } from '../common/district/detail';
+import { CreateDistrict } from '../common/district/create';
+import { CreateWard } from '../common/ward/create';
+import { EditWard } from '../common/ward/edit';
+import { DetailWard } from '../common/ward/detail';
 
 
 interface Props {
@@ -128,10 +137,13 @@ const Layout: React.FC<Props> = ({ children }) => {
             {location.pathname === "/listings" && <Pop />}
             {location.pathname === "/listing_categories" && <CreateListingCateogry />}
             {location.pathname === "/listing_types" && <CreateListingType />}
-            {location.pathname === "/news" && <CreateBanner />}
+            {location.pathname === "/news" && <CreateNews />}
             {location.pathname === "/news_category" && <CreateNewsCategory />}
             {location.pathname === "/users" && <CreateUser />}
             {location.pathname === "/regions" && <CreateRegion />}
+            {location.pathname === "/listing_directions" && <CreateDirection />}
+            {location.pathname === "/districts" && <CreateDistrict />}
+            {location.pathname === "/wards" && <CreateWard />}
           </PopUpLayout>
           }
           {field === "edit" && 
@@ -143,6 +155,9 @@ const Layout: React.FC<Props> = ({ children }) => {
             {location.pathname === "/news_category" && <EditNewsCategory />}
             {location.pathname === "/news" && <EditBanner />}
             {location.pathname === "/regions" && <EditRegion />}
+            {location.pathname === "/listing_directions" && <EditDirection />}
+            {location.pathname === "/districts" && <EditDistrict />}
+            {location.pathname === "/wards" && <EditWard />}
           </PopUpLayout>
           }
           {field === "detail" && 
@@ -154,6 +169,9 @@ const Layout: React.FC<Props> = ({ children }) => {
             {location.pathname === "/news_category" && <DetailNewsCategory />}
             {location.pathname === "/news" && <DetailBanner />}
             {location.pathname === "/regions" && <DetailRegion />}
+            {location.pathname === "/listing_directions" && <DetailDirection />}
+            {location.pathname === "/districts" && <DetailDistrict />}
+            {location.pathname === "/wards" && <DetailWard />}
           </PopUpLayout>
           }
           

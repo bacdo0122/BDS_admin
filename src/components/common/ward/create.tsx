@@ -1,21 +1,19 @@
 import React, { useRef, useState } from 'react';
 import { styled, Box, BoxProps, TextField, alpha, FormControl, Button, InputLabel } from '@mui/material';
 import { useAppDispatch, useAppSelector } from 'stores/hook';
+import { CreateNewNews } from 'apis/news';
 import { setField, setReset } from 'reducers/Film';
 import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
 import dayjs, { Dayjs } from 'dayjs';
-import Stack from '@mui/material/Stack';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { TimePicker } from '@mui/x-date-pickers/TimePicker';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
-import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { createBannerSchema } from '../../../helpers/validation';
 import CreateFilmInput from '../../../Inputs/createFilmInput';
-import { EditExisNews } from '../../../apis/news';
+import { CreateNewNewsCategory } from '../../../apis/newsCategory';
+import { CreateNewRegion } from '../../../apis/region';
+import { CreateNewDirection } from '../../../apis/direction';
+import { CreateNewWard } from '../../../apis/ward';
+
 const Container = styled(Box)<BoxProps>({
   width: '50%',
   height: '80%',
@@ -29,6 +27,7 @@ const MainWrapper = styled(Box)<BoxProps>({
   margin: '20px auto',
   maxWidth: '70%',
   textAlign: 'center',
+  position: 'relative',
 });
 const Label = styled(Box)<BoxProps>({
   fontWeight: '700',
@@ -75,112 +74,73 @@ const CloseIcon = styled(Box)<BoxProps>({
   top: '4%',
   cursor: 'pointer',
 });
-interface Banner {
-  id: string;
-  content: string;
-  title: string;
-  userId: number;
-  category_id: number;
+interface Ward {
+  name: string;
+  districtId: number;
 }
-export const EditBanner = () => {
+export const CreateWard = () => {
   const dispatch = useAppDispatch();
   const reset = useAppSelector((state: any) => state.films.reset);
-  const detail = useAppSelector((state: any) => state.films.detail);
-  const [value, setValue] = React.useState<Banner>({
-    id: detail && detail.id,
-    title:detail && detail.title,
-    content:detail && detail.content,
-    userId: detail && detail.userId,
-    category_id: detail && detail.category_id,
+  const [value, setValue] = React.useState<Ward>({
+    name: '',
+    districtId: 0
   });
   const {
     setError,
     handleSubmit,
     control,
     formState: { errors, isDirty, isValid },
-  } = useForm<Banner>({
+  } = useForm<Ward>({
     mode: 'onChange',
     defaultValues: {
-      title:detail && detail.title,
-      content:detail && detail.content,
-      userId: detail && detail.userId,
-      category_id: detail && detail.category_id,
+      name: '',
+      districtId: 0
     },
     resolver: yupResolver(createBannerSchema),
   });
-  const handleEditBanner = async () => {
-    await EditExisNews(value.id, value.title, value.content, value.userId, value.category_id);
+  const handleCreateBanner = async () => {
+    await CreateNewWard(value.name, value.districtId);
     dispatch(setField(null));
     dispatch(setReset(!reset));
   };
   return (
     <Container>
       <MainWrapper>
-        <Label>Edit Banner</Label>
+        <Label>Create Ward</Label>
         <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
           <InputLabel shrink htmlFor="bootstrap-input">
-            Content
+          Name
           </InputLabel>
           <CreateFilmInput
-          defaultValue={value.content}
-            onChange1={(e: any) => setValue({ ...value, content: e.target.value })}
+            onChange1={(e: any) => setValue({ ...value, name: e.target.value })}
             requiredIcon
-            name="content"
-            label="content"
+            name="name"
+            label="name"
             control={control}
-            placeholder="Enter your content"
+            placeholder="Enter your name"
           />
         </FormControl>
         <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
           <InputLabel shrink htmlFor="bootstrap-input">
-            Title
+          districtId
           </InputLabel>
           <CreateFilmInput
-                    defaultValue={value.title}
-            onChange1={(e: any) => setValue({ ...value, title: e.target.value })}
+            onChange1={(e: any) => setValue({ ...value, districtId: e.target.value })}
             requiredIcon
-            name="title"
-            label="Title"
+            name="districtId"
+            type='number'
+            label="districtId"
             control={control}
-            placeholder="Enter your title"
+            placeholder="Enter your districtId"
           />
         </FormControl>
-        <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
-          <InputLabel shrink htmlFor="bootstrap-input">
-            User ID
-          </InputLabel>
-          <CreateFilmInput
-          type='number'
-          defaultValue={value.userId}
-            onChange1={(e: any) => setValue({ ...value, userId: e.target.value })}
-            requiredIcon
-            name="userId"
-            label="userId"
-            control={control}
-            placeholder="Enter your userId"
-          />
-        </FormControl>
-
-        <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
-          <InputLabel shrink htmlFor="bootstrap-input">
-            Category ID
-          </InputLabel>
-          <CreateFilmInput
-          type='number'
-          defaultValue={value.category_id}
-            onChange1={(e: any) => setValue({ ...value, category_id: e.target.value })}
-            requiredIcon
-            name="category_id"
-            label="category_id"
-            control={control}
-            placeholder="Enter your category_id"
-          />
-        </FormControl>
-
-        <Button variant="contained"  disabled={!isValid}
-          onClick={handleSubmit(handleEditBanner)}
-        sx={{ marginTop: '10px' }}>
-          Edit
+        <Button
+          variant="contained"
+          disabled={!isValid}
+          onClick={handleSubmit(handleCreateBanner)}
+          sx={{ marginTop: '10px' }}
+        >
+          Create
         </Button>
       </MainWrapper>
       <CloseIcon>

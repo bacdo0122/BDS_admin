@@ -7,7 +7,7 @@ import { Box,Button } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import {  GridValueGetterParams,GridActionsCellItem} from '@mui/x-data-grid';
 import { setField, setReset, setDetail } from 'reducers/Film';
-import { deleteNews, deleteRegion } from '../components/common/table/action';
+import { deleteNews, deleteRegion, deleteWard } from '../components/common/table/action';
 const Ward = () => {
   const Ward = useAppSelector((state:any)=>state.ward.Wards);
   console.log("Ward:", Ward)
@@ -27,6 +27,7 @@ const Ward = () => {
       icon={ <Button variant="contained" color="success">Xóa</Button>}
       label="Delete"
       onClick={async()=> {
+        await deleteWard(params.id);
         dispatch(setReset(!reset))
       }}
     />,

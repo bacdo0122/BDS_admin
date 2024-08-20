@@ -7,6 +7,7 @@ import { Box,Button } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import {  GridValueGetterParams,GridActionsCellItem} from '@mui/x-data-grid';
 import { setField, setReset, setDetail } from 'reducers/Film';
+import { deleteDirection, deleteDistrict } from '../components/common/table/action';
 const Direction = () => {
   const directions = useAppSelector((state:any)=>state.direction.Directions);
   console.log("directions:", directions)
@@ -26,6 +27,7 @@ const Direction = () => {
       icon={ <Button variant="contained" color="success">Xóa</Button>}
       label="Delete"
       onClick={async()=> {
+        await deleteDirection(params.id);
         dispatch(setReset(!reset))
       }}
     />,

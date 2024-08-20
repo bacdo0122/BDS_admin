@@ -8,6 +8,41 @@ export const deleteUser =  async (id:number )=>{
     });
    
 }
+export const deleteListing =  async (id:number )=>{
+
+    await axiosInstance.post("/listing/delete",{
+        id: id
+    });
+   
+}
+export const confirmListing =  async (id:number )=>{
+
+    await axiosInstance.post("/listing/confirm",{
+        id: id, status: 'done'
+    });
+   
+}
+export const deleteDirection =  async (id:number )=>{
+
+    await axiosInstance.post("/direction/delete",{
+        id: id
+    });
+   
+}
+export const deleteDistrict =  async (id:number )=>{
+
+    await axiosInstance.post("/district/delete",{
+        id: id
+    });
+   
+}
+export const deleteWard =  async (id:number )=>{
+
+    await axiosInstance.post("/ward/delete",{
+        id: id
+    });
+   
+}
 export const deleteCategoryListing =  async (id:number )=>{
 
     await axiosInstance.post("/categoryListing/delete",{

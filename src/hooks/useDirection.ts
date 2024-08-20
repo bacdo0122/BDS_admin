@@ -15,13 +15,12 @@ export const useDirection = (location:any ,dispatch:any,type:(string | null) = n
         error: actorError,
         mutate: reloadActor
     } = useSWR(
-       ((location.pathname === "/listing_directions") && getAccessToken()) ? [search === null ? '/direction?page=1&limit=100' :`/direction?page=1&limit=100&${type}=${search}`, getAccessToken()] : null ,fetcher)
+       (((location.pathname === "/listing_directions") ||  (location.pathname === "/listings") )&&  getAccessToken()) ? [search === null ? '/direction?page=1&limit=100' :`/direction?page=1&limit=100&${type}=${search}`, getAccessToken()] : null ,fetcher)
        useEffect(()=>{
         const a = async ()=>{
             const newActor = await reloadActor();
          if(actors){  
              if(!search){
-                
                 dispatch(setAllDirection(newActor.data))
             }
              dispatch(setDirections(newActor.data))

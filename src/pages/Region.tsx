@@ -14,16 +14,18 @@ const Region = () => {
   const dispatch = useAppDispatch();
   const reset = useAppSelector((state:any)=>state.films.reset)
   const  columnsCategories = [
-    {field: 'district', headerName: 'Quận', width: 300,
-      valueGetter: (params: GridValueGetterParams) =>
-        {
-            return params.row.district.name;
-        }
+    {field: 'name', headerName: 'Tên khu vực', width: 300,
      },
-    {field: 'ward', headerName: 'Huyện', width: 300,
+     {field: 'ward', headerName: 'Tên Quận', width: 300,
       valueGetter: (params: GridValueGetterParams) =>
         {
             return params.row.ward.name;
+        }
+     },
+    {field: 'ward', headerName: 'Tên Huyện', width: 300,
+      valueGetter: (params: GridValueGetterParams) =>
+        {
+            return params.row.ward.district.name;
         }
      },
     {

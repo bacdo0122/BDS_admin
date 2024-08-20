@@ -1,7 +1,7 @@
 import { axiosInstance } from 'apis';
 import { newListing } from '../components/common/Pop';
 
-export const CreateNewListing = async(payload: newListing)=>{
+export const CreateNewListing = async(payload: newListing, images: string)=>{
     const {
         regionId,
         userId,
@@ -17,8 +17,9 @@ export const CreateNewListing = async(payload: newListing)=>{
         bedrooms,
         bathrooms,
         type_id,
-        category_id
-    } = payload
+        category_id,
+        direction_id
+    } = payload;
     await axiosInstance.post("/listing/create", {
         regionId,
         userId,
@@ -35,7 +36,8 @@ export const CreateNewListing = async(payload: newListing)=>{
         bathrooms ,
         type_id,
         category_id,
-        image: '[https://images.unsplash.com/photo-1591474200742-8e512e6f98f8?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGx1eHVyeSUyMGhvdXNlfGVufDB8fDB8fHww]'
+        direction_id,
+        image: images ? String(images) : 'https://images.unsplash.com/photo-1591474200742-8e512e6f98f8?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGx1eHVyeSUyMGhvdXNlfGVufDB8fDB8fHww'
     }
     )
    
@@ -57,7 +59,8 @@ export const EditNewListing = async(payload:newListing)=>{
         bedrooms,
         bathrooms ,
         type_id,
-        category_id
+        category_id,
+        direction_id
     } = payload
 
     await axiosInstance.put("/listing/edit", {
@@ -76,6 +79,7 @@ export const EditNewListing = async(payload:newListing)=>{
         bathrooms ,
         type_id,
         category_id,
-        image: '[https://images.unsplash.com/photo-1591474200742-8e512e6f98f8?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGx1eHVyeSUyMGhvdXNlfGVufDB8fDB8fHww]'
+        direction_id,
+        image: 'https://images.unsplash.com/photo-1591474200742-8e512e6f98f8?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGx1eHVyeSUyMGhvdXNlfGVufDB8fDB8fHww'
     })
 }

@@ -97,6 +97,7 @@ export interface newListing {
   regionId: number;
   type_id: number;
   category_id: number;
+  direction_id: number;
   title: string;
   description: string;
   address: string;
@@ -127,6 +128,7 @@ export const Pop = () => {
     userId: 0,
     type_id:0,
     category_id: 0,
+    direction_id: 0,
     price: 0,
     title: '',
     description: '',
@@ -152,6 +154,7 @@ export const Pop = () => {
       userId: 0,
       type_id:0,
       category_id: 0,
+      direction_id: 0,
       price: 0,
       title: '',
       description: '',
@@ -170,6 +173,18 @@ export const Pop = () => {
 
   const listing_categories = useAppSelector((state: any) => state.actor?.allActor);
   const listing_types = useAppSelector((state:any)=>state.category.allCategory);
+  const listing_directions = useAppSelector((state:any)=>state.direction.allDirection);
+console.log("listing_directions:", listing_directions)
+  const [images, setImages] = useState<File[]>([]);
+
+  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      // Chuyển đổi FileList thành mảng
+      const newFiles = Array.from(event.target.files);
+      // Kết hợp tệp mới với các tệp hiện tại
+      setImages(prevImages => [...prevImages, ...newFiles]);
+    }
+  };
   // const categories = useAppSelector((state: any) => state.category.allCategory);
   // const banner = useAppSelector((state: any) => state.banner.allBanner);
 
@@ -198,7 +213,13 @@ export const Pop = () => {
     // formstate has the errors
   const handleCreateFilm : SubmitHandler<newListing> = async () => {
     setLoading(true);
-
+    const image_string = images.reduce((item:any, value, index) => {
+      if(index === 0){
+        const currentValue =  item += `${value.name}`;
+      }
+     const currentValue =  item += `;${value.name}`;
+     return currentValue;
+    }, '')
     // const formData = new FormData();
     // if (film.url) {
     //   formData.append('file[]', film.url, film.url.name);
@@ -214,7 +235,7 @@ export const Pop = () => {
     // } catch (error) {
     //   console.log('error:', error);
     // }
-    await CreateNewListing({ ...film });
+    await CreateNewListing({ ...film }, String(image_string));
     setLoading(false);
     dispatch(setField(null));
     dispatch(setReset(!reset));
@@ -375,6 +396,55 @@ export const Pop = () => {
             placeholder="Loại tin rao "
           />
     </FormControl>
+    <FormControl variant="standard" sx={{width: "100%", marginTop:"10px"}}>
+         <CreateOptionInput
+            onChange1={(event: any, value: any) => setFilm({ ...film, direction_id: value.id })}
+            options={listing_directions ? listing_directions.map((item:any)=>({id: item.id, name: item.name})) : []}
+            requiredIcon
+            name="direction_id"
+            label="Hướng nhà"
+            control={control}
+            placeholder="Hướng nhà "
+          />
+    </FormControl>
+
+    <FormControl variant="standard" sx={{ width: '100%', marginTop: '5px' }}>
+          <InputLabel shrink htmlFor="image-upload" style={{top: "-10px"}}>
+            Upload Images
+          </InputLabel>
+          <input
+            type="file"
+            id="image-upload"
+            multiple
+            accept="image/*"
+            onChange={handleImageChange}
+            style={{ display: 'none' }}
+          />
+          <Button
+            variant="contained"
+            component="label"
+            htmlFor="image-upload"
+            style={{ marginTop: '10px', width: '100%' }}
+          >
+            Choose Images
+          </Button>
+        </FormControl>
+
+        <div style={{ marginTop: '20px' }}>
+          {images.length > 0 && (
+            <div>
+              {images.map((image, index) => (
+                <img
+                  key={index}
+                  src={URL.createObjectURL(image)}
+                  alt={`preview-${index}`}
+                  style={{ width: '100px', height: '100px', margin: '5px' }}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+
         <Button
           data-test="btn-film"
           type='submit'

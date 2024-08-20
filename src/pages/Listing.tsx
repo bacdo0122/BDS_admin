@@ -5,7 +5,7 @@ import {Table} from '../components/common/table'
 import { SearchLayout } from 'components/Search';
 import { Box,Button } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import {deleteUser} from "../components/common/table/action";
+import {confirmListing, deleteListing, deleteUser} from "../components/common/table/action";
 import {  GridValueGetterParams,GridActionsCellItem} from '@mui/x-data-grid';
 import { setField, setReset, setDetail } from 'reducers/Film';
 import { axiosInstance } from '../apis';
@@ -64,7 +64,7 @@ const Listing = () => {
     field: 'actions',
     type: 'actions',
     headerName: 'Hành động',
-    width: 400,
+    width: 600,
     getActions: (params:any) => [
      
       <GridActionsCellItem
@@ -72,7 +72,7 @@ const Listing = () => {
       icon={ <Button variant="contained" color="success">Xóa</Button>}
       label="Delete"
       onClick={async()=> {
-        await deleteUser(params.id);
+        await deleteListing(params.id);
         dispatch(setReset(!reset))
       }}
     />,
@@ -95,7 +95,16 @@ const Listing = () => {
     dispatch(setDetail(params.row));
     dispatch(setField("detail"))
   }}
-  />
+  />,
+  <GridActionsCellItem
+  key={3}
+  icon={ <Button variant="contained" >Chấp nhận</Button>}
+  label="Detail"
+  onClick={async()=> {
+    await confirmListing(params.id);
+    dispatch(setReset(!reset))
+ }}
+ />
     ] 
   },
   ]

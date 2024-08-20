@@ -11,6 +11,7 @@ import { useBanner } from '../../hooks/useBanner';
 import { useNews } from '../../hooks/useNews';
 import { useNewsCategory } from '../../hooks/useNewsCategory';
 import { useRegion } from '../../hooks/useRegion';
+import { useDirection } from '../../hooks/useDirection';
 
 
 const Wrapper = styled(Box)<BoxProps>({
@@ -68,6 +69,9 @@ export const SearchView = (layout:any) => {
   } else if(layout.layout === "Regions"){
 
     useRegion(location, dispatch, search.type, search.value) 
+  } else if(layout.layout === "Directions"){
+
+    useDirection(location, dispatch, search.type, search.value) 
   } 
   else{
 

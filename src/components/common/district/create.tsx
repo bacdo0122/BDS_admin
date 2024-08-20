@@ -9,6 +9,10 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { createBannerSchema } from '../../../helpers/validation';
 import CreateFilmInput from '../../../Inputs/createFilmInput';
+import { CreateNewNewsCategory } from '../../../apis/newsCategory';
+import { CreateNewRegion } from '../../../apis/region';
+import { CreateNewDirection } from '../../../apis/direction';
+import { CreateNewDistrict } from '../../../apis/district';
 
 const Container = styled(Box)<BoxProps>({
   width: '50%',
@@ -70,101 +74,49 @@ const CloseIcon = styled(Box)<BoxProps>({
   top: '4%',
   cursor: 'pointer',
 });
-interface Banner {
-  content: string;
-  title: string;
-  userId: number;
-  category_id: number;
+interface District {
+  name: string;
 }
-export const CreateNews = () => {
+export const CreateDistrict = () => {
   const dispatch = useAppDispatch();
   const reset = useAppSelector((state: any) => state.films.reset);
-  const [value, setValue] = React.useState<Banner>({
-    title: '',
-    content: '',
-    userId: 0,
-    category_id: 0
+  const [value, setValue] = React.useState<District>({
+    name: '',
   });
   const {
     setError,
     handleSubmit,
     control,
     formState: { errors, isDirty, isValid },
-  } = useForm<Banner>({
+  } = useForm<District>({
     mode: 'onChange',
     defaultValues: {
-      title: '',
-      content: '',
-      userId: 0,
-      category_id: 0
+      name: '',
     },
     resolver: yupResolver(createBannerSchema),
   });
   const handleCreateBanner = async () => {
-    await CreateNewNews(value.title, value.content, value.userId, value.category_id);
+    await CreateNewDistrict(value.name);
     dispatch(setField(null));
     dispatch(setReset(!reset));
   };
   return (
     <Container>
       <MainWrapper>
-        <Label>Create News</Label>
+        <Label>Create Direction</Label>
         <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
           <InputLabel shrink htmlFor="bootstrap-input">
-            Content
+          Name
           </InputLabel>
           <CreateFilmInput
-            onChange1={(e: any) => setValue({ ...value, content: e.target.value })}
+            onChange1={(e: any) => setValue({ ...value, name: e.target.value })}
             requiredIcon
-            name="content"
-            label="content"
+            name="name"
+            label="name"
             control={control}
-            placeholder="Enter your content"
+            placeholder="Enter your direction"
           />
         </FormControl>
-        <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
-          <InputLabel shrink htmlFor="bootstrap-input">
-            Title
-          </InputLabel>
-          <CreateFilmInput
-            onChange1={(e: any) => setValue({ ...value, title: e.target.value })}
-            requiredIcon
-            name="title"
-            label="Title"
-            control={control}
-            placeholder="Enter your title"
-          />
-        </FormControl>
-        <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
-          <InputLabel shrink htmlFor="bootstrap-input">
-            User ID
-          </InputLabel>
-          <CreateFilmInput
-          type='number'
-            onChange1={(e: any) => setValue({ ...value, userId: e.target.value })}
-            requiredIcon
-            name="userId"
-            label="userId"
-            control={control}
-            placeholder="Enter your userId"
-          />
-        </FormControl>
-
-        <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
-          <InputLabel shrink htmlFor="bootstrap-input">
-            Category ID
-          </InputLabel>
-          <CreateFilmInput
-          type='number'
-            onChange1={(e: any) => setValue({ ...value, category_id: e.target.value })}
-            requiredIcon
-            name="category_id"
-            label="category_id"
-            control={control}
-            placeholder="Enter your category_id"
-          />
-        </FormControl>
-
         <Button
           variant="contained"
           disabled={!isValid}

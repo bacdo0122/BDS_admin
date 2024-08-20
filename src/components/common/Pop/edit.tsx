@@ -96,7 +96,6 @@ export const Edit = () => {
   const dispatch = useAppDispatch();
   const reset = useAppSelector((state: any) => state.films.reset);
   const detail = useAppSelector((state: any) => state.films.detail);
-  console.log("detail:", detail)
   const [loading, setLoading] = useState(false);
 
   const [film, setFilm] = useState({
@@ -114,6 +113,7 @@ export const Edit = () => {
     bedrooms: detail && detail.bedrooms,
     bathrooms: detail && detail.bathrooms,
     category_id: detail && detail.category_id,
+    direction_id: detail && detail.direction_id,
     type_id: detail && detail.type_id,
   });
 
@@ -139,6 +139,7 @@ export const Edit = () => {
       bedrooms: detail && detail.bedrooms,
       bathrooms: detail && detail.bathrooms,
       category_id: detail && detail.category_id,
+      direction_id: detail && detail.direction_id,
       type_id: detail && detail.type_id,
       },
     resolver: yupResolver(CreateFilmSchema),
@@ -148,7 +149,18 @@ export const Edit = () => {
 
 const listing_categories = useAppSelector((state: any) => state.actor?.allActor);
 const listing_types = useAppSelector((state:any)=>state.category.allCategory);
- 
+const listing_directions = useAppSelector((state:any)=>state.direction.allDirection);
+const [images, setImages] = useState(detail && detail.image.length > 1 ? detail.image.split(";") : [detail.image]);
+
+const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+  if (event.target.files) {
+    // Chuyển đổi FileList thành mảng
+    const newFiles = Array.from(event.target.files);
+    // Kết hợp tệp mới với các tệp hiện tại
+    setImages((prevImages:any) => [...prevImages, ...newFiles]);
+  }
+};
+
   const handleEditFilm = async () => {
     setLoading(true);
     // const newArrayIdTypes = film.types.map((item: any) => String(item.id));
@@ -324,6 +336,54 @@ const listing_types = useAppSelector((state:any)=>state.category.allCategory);
             placeholder="Loại tin rao "
           />
     </FormControl>
+
+    <FormControl variant="standard" sx={{width: "100%", marginTop:"10px"}}>
+         <CreateOptionInput
+            onChange1={(event: any, value: any) => setFilm({ ...film, direction_id: value.id })}
+            options={listing_directions ? listing_directions.map((item:any)=>({id: item.id, name: item.name})) : []}
+            requiredIcon
+            name="direction_id"
+            label="Hướng nhà"
+            control={control}
+            placeholder="Hướng nhà "
+          />
+    </FormControl>
+    <FormControl variant="standard" sx={{ width: '100%', marginTop: '5px' }}>
+          <InputLabel shrink htmlFor="image-upload" style={{top: "-10px"}}>
+            Upload Images
+          </InputLabel>
+          <input
+            type="file"
+            id="image-upload"
+            multiple
+            accept="image/*"
+            onChange={handleImageChange}
+            style={{ display: 'none' }}
+          />
+          <Button
+            variant="contained"
+            component="label"
+            htmlFor="image-upload"
+            style={{ marginTop: '10px', width: '100%' }}
+          >
+            Choose Images
+          </Button>
+        </FormControl>
+
+        <div style={{ marginTop: '20px' }}>
+          {images.length > 0 && (
+            <div>
+              {images.map((image: any, index:number) => (
+                <img
+                  key={index}
+                  src={`http://localhost:3000/assets/images/${image}`}
+                  alt={`preview-${index}`}
+                  style={{ width: '100px', height: '100px', margin: '5px' }}
+                />
+              ))}
+            </div>
+          )}
+        </div>
 
         <Button
           data-test="btn-film"
