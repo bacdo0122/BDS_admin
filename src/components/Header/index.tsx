@@ -44,7 +44,6 @@ interface Props{
   name:string
 }
 export const Header = ({title, avatar, name}:Props) => {
-  console.log("title:", title)
   return (
    <Container>
     <Title>{title}</Title>

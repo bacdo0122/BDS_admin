@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useCallback, useState } from 'react';
 import {
   styled,
   Box,
@@ -19,6 +19,7 @@ import {
   CircularProgress,
   Typography,
   TypographyProps,
+  IconButton,
 } from '@mui/material';
 import { useAppDispatch, useAppSelector } from 'stores/hook';
 import { setField, setReset } from 'reducers/Film';
@@ -30,7 +31,7 @@ import { CreateFilmSchema } from '../../../helpers/validation';
 import CreateFilmInput from '../../../Inputs/createFilmInput';
 import CreateOptionInput from '../../../Inputs/createOptionInput';
 import { CreateNewListing } from '../../../apis/film';
-
+import CloseIcon from '@mui/icons-material/Close';
 
 const Container = styled(Box)<BoxProps>({
   width: '50%',
@@ -86,7 +87,7 @@ export const BootstrapInput = styled(TextField)(({ theme }) => ({
     },
   },
 }));
-const CloseIcon = styled(Box)<BoxProps>({
+const CloseIconBtn = styled(Box)<BoxProps>({
   position: 'absolute',
   right: '4%',
   top: '4%',
@@ -101,7 +102,8 @@ export interface newListing {
   title: string;
   description: string;
   address: string;
-  area: string;
+  area: number;
+  pricePerArea: number;
   status_listing: string;
   legal_status: boolean;
   furnishing: boolean;
@@ -133,7 +135,8 @@ export const Pop = () => {
     title: '',
     description: '',
     address: '',
-    area: '',
+    area: 0,
+    pricePerArea: 0,
     status_listing: '',
     legal_status: true,
     furnishing: true,
@@ -159,7 +162,8 @@ export const Pop = () => {
       title: '',
       description: '',
       address: '',
-      area: '',
+      area: 0,
+      pricePerArea: 0,
       status_listing: '',
       legal_status: true,
       furnishing: true,
@@ -174,10 +178,10 @@ export const Pop = () => {
   const listing_categories = useAppSelector((state: any) => state.actor?.allActor);
   const listing_types = useAppSelector((state:any)=>state.category.allCategory);
   const listing_directions = useAppSelector((state:any)=>state.direction.allDirection);
-console.log("listing_directions:", listing_directions)
   const [images, setImages] = useState<File[]>([]);
 
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+    console.log("event:", event.target)
     if (event.target.files) {
       // Chuyển đổi FileList thành mảng
       const newFiles = Array.from(event.target.files);
@@ -213,11 +217,13 @@ console.log("listing_directions:", listing_directions)
     // formstate has the errors
   const handleCreateFilm : SubmitHandler<newListing> = async () => {
     setLoading(true);
-    const image_string = images.reduce((item:any, value, index) => {
+    console.log("images:", images)
+    const image_string = images.reduce((item:any, value:any, index:number) => {
+      let currentValue = ``;
       if(index === 0){
-        const currentValue =  item += `${value.name}`;
+         currentValue =  item += `${value}`;
       }
-     const currentValue =  item += `;${value.name}`;
+      else currentValue =  item += `;${value}`;
      return currentValue;
     }, '')
     // const formData = new FormData();
@@ -240,6 +246,12 @@ console.log("listing_directions:", listing_directions)
     dispatch(setField(null));
     dispatch(setReset(!reset));
   };
+
+  const handleClose = useCallback((indexImage: number) => {
+
+    const newImages = [...images].filter((image, index) => index !== indexImage);
+    setImages(newImages)
+  }, [images])
   return (
     <Container>
       <MainWrapper>
@@ -303,6 +315,13 @@ console.log("listing_directions:", listing_directions)
           Diện tích
           </InputLabel>
           <CreateFilmInput type="number" onChange1={(e:any)=> setFilm({ ...film, area: e.target.value })}  requiredIcon name="area" label="area" control={control} placeholder="Enter your area" />
+        </FormControl>
+
+        <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
+          <InputLabel shrink htmlFor="bootstrap-input">
+          Giá mỗi m2
+          </InputLabel>
+          <CreateFilmInput type="number" onChange1={(e:any)=> setFilm({ ...film, pricePerArea: e.target.value })}  requiredIcon name="pricePerArea" label="pricePerArea" control={control} placeholder="Enter your pricePerArea" />
         </FormControl>
 
         <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
@@ -408,7 +427,7 @@ console.log("listing_directions:", listing_directions)
           />
     </FormControl>
 
-    <FormControl variant="standard" sx={{ width: '100%', marginTop: '5px' }}>
+    <FormControl variant="standard" sx={{ width: '100%', marginTop: '20px' }}>
           <InputLabel shrink htmlFor="image-upload" style={{top: "-10px"}}>
             Upload Images
           </InputLabel>
@@ -432,14 +451,19 @@ console.log("listing_directions:", listing_directions)
 
         <div style={{ marginTop: '20px' }}>
           {images.length > 0 && (
-            <div>
+            <div style={{display: 'flex', flexWrap: "wrap"}}>
               {images.map((image, index) => (
+                 <div  key={index}>
                 <img
                   key={index}
                   src={URL.createObjectURL(image)}
                   alt={`preview-${index}`}
                   style={{ width: '100px', height: '100px', margin: '5px' }}
                 />
+                <IconButton aria-label="close" onClick={() => handleClose(index)}>
+                <CloseIcon />
+              </IconButton>
+              </div>
               ))}
             </div>
           )}
@@ -456,9 +480,9 @@ console.log("listing_directions:", listing_directions)
           {loading ? <CircularProgress color="secondary" /> : 'Thêm'}
         </Button>
       </MainWrapper>
-      <CloseIcon>
+      <CloseIconBtn>
         <HighlightOffOutlinedIcon onClick={() => dispatch(setField(null))} />
-      </CloseIcon>
+      </CloseIconBtn>
     </Container>
   );
 };

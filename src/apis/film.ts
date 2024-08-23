@@ -10,6 +10,7 @@ export const CreateNewListing = async(payload: newListing, images: string)=>{
         description,
         address,
         area,
+        pricePerArea,
         status_listing,
         legal_status,
         furnishing,
@@ -28,6 +29,7 @@ export const CreateNewListing = async(payload: newListing, images: string)=>{
         description,
         address,
         area,
+        pricePerArea,
         status_listing,
         legal_status,
         furnishing,
@@ -43,7 +45,7 @@ export const CreateNewListing = async(payload: newListing, images: string)=>{
    
 }
 
-export const EditNewListing = async(payload:newListing)=>{
+export const EditNewListing = async(payload:newListing, images: string)=>{
     const {
         regionId,
         userId,
@@ -52,6 +54,7 @@ export const EditNewListing = async(payload:newListing)=>{
         description,
         address,
         area,
+        pricePerArea,
         status_listing,
         legal_status,
         furnishing,
@@ -71,6 +74,7 @@ export const EditNewListing = async(payload:newListing)=>{
         description,
         address,
         area,
+        pricePerArea,
         status_listing,
         legal_status,
         furnishing,
@@ -80,6 +84,6 @@ export const EditNewListing = async(payload:newListing)=>{
         type_id,
         category_id,
         direction_id,
-        image: 'https://images.unsplash.com/photo-1591474200742-8e512e6f98f8?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGx1eHVyeSUyMGhvdXNlfGVufDB8fDB8fHww'
+        image: images ? String(images) : 'https://images.unsplash.com/photo-1591474200742-8e512e6f98f8?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGx1eHVyeSUyMGhvdXNlfGVufDB8fDB8fHww'
     })
 }

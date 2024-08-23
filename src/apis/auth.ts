@@ -19,11 +19,9 @@ export const ExecLogin = async (
   refreshToken: string;
 }> => {
 
-  console.log("data:", email, password)
   const { data } = await axios.post('http://localhost:3000/auth/login', {
     email,
     password,
   });
-  console.log("data:1", data)
   return data;
 };

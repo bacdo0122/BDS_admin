@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useCallback, useState } from 'react';
 import {
   styled,
   Box,
@@ -17,18 +17,21 @@ import {
   ListItemText,
   ListItemIcon,
   CircularProgress,
+  IconButton,
 } from '@mui/material';
 import { useAppDispatch, useAppSelector } from 'stores/hook';
 import { setField, setReset } from 'reducers/Film';
 import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
 import { newListing } from '.';
 import { axiosInstance } from '../../../apis';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { CreateFilmSchema } from '../../../helpers/validation';
 import CreateFilmInput from '../../../Inputs/createFilmInput';
 import CreateOptionInput from '../../../Inputs/createOptionInput';
 import { EditNewListing } from '../../../apis/film';
+import CloseIcon from '@mui/icons-material/Close';
+
 const Container = styled(Box)<BoxProps>({
   width: '50%',
   height: '80%',
@@ -83,7 +86,7 @@ const BootstrapInput = styled(TextField)(({ theme }) => ({
     },
   },
 }));
-const CloseIcon = styled(Box)<BoxProps>({
+const CloseIconBtn = styled(Box)<BoxProps>({
   position: 'absolute',
   right: '4%',
   top: '4%',
@@ -106,6 +109,7 @@ export const Edit = () => {
     description: detail && detail.description,
     address: detail && detail.address,
     area: detail && detail.area,
+    pricePerArea: detail && detail.pricePerArea,
     status_listing: detail && detail.status,
     legal_status: detail && detail.legal_status,
     furnishing: detail && detail.furnishing,
@@ -132,6 +136,7 @@ export const Edit = () => {
       description: detail && detail.description,
       address: detail && detail.address,
       area: detail && detail.area,
+      pricePerArea: detail && detail.pricePerArea,
       status_listing: detail && detail.status,
       legal_status: detail && detail.legal_status,
       furnishing: detail && detail.furnishing,
@@ -150,19 +155,30 @@ export const Edit = () => {
 const listing_categories = useAppSelector((state: any) => state.actor?.allActor);
 const listing_types = useAppSelector((state:any)=>state.category.allCategory);
 const listing_directions = useAppSelector((state:any)=>state.direction.allDirection);
+console.log("detail:", detail)
 const [images, setImages] = useState(detail && detail.image.length > 1 ? detail.image.split(";") : [detail.image]);
 
 const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
   if (event.target.files) {
     // Chuyển đổi FileList thành mảng
-    const newFiles = Array.from(event.target.files);
+    const newFiles = Array(event.target.files[0].name);
     // Kết hợp tệp mới với các tệp hiện tại
     setImages((prevImages:any) => [...prevImages, ...newFiles]);
   }
 };
 
-  const handleEditFilm = async () => {
+  const handleEditFilm  = async () => {
     setLoading(true);
+    console.log("images:", images)
+    const image_string = images.reduce((item:any, value:any, index:number) => {
+      let currentValue = ``;
+      if(index === 0){
+         currentValue =  item += `${value}`;
+      }
+      else currentValue =  item += `;${value}`;
+     return currentValue;
+    }, '')
+      console.log("image_string:", image_string)
     // const newArrayIdTypes = film.types.map((item: any) => String(item.id));
     // const newArrayIdCategories = film.categories.map((item: any) => String(item.id));
     // const formData = new FormData();
@@ -188,12 +204,17 @@ const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     //     }
     //    }
     //    )
-    await EditNewListing({ ...film });
+    await EditNewListing({ ...film }, String(image_string));
     setLoading(false);
     dispatch(setField(null));
     dispatch(setReset(!reset));
   };
+  const handleClose = useCallback((imageTarget: string) => {
 
+    const newImages = [...images].filter(image => image !== imageTarget);
+    console.log("newImages:", newImages)
+    setImages(newImages)
+  }, [images])
   return (
     <Container>
       <MainWrapper>
@@ -226,42 +247,49 @@ const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
 
         <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
           <InputLabel shrink htmlFor="bootstrap-input">
-            description
+            Description
           </InputLabel>
           <CreateFilmInput defaultValue={film.description} onChange1={(e:any)=> setFilm({ ...film, description: e.target.value })}  requiredIcon name="description" label="description" control={control} placeholder="Enter your description" />
         </FormControl>
 
         <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
           <InputLabel shrink htmlFor="bootstrap-input">
-            address
+            Address
           </InputLabel>
           <CreateFilmInput defaultValue={film.address} onChange1={(e:any)=> setFilm({ ...film, address: e.target.value })}  requiredIcon name="address" label="address" control={control} placeholder="Enter your address" />
         </FormControl>
 
         <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
           <InputLabel shrink htmlFor="bootstrap-input">
-            area
+            Area
           </InputLabel>
-          <CreateFilmInput defaultValue={film.area} onChange1={(e:any)=> setFilm({ ...film, area: e.target.value })}  requiredIcon name="area" label="area" control={control} placeholder="Enter your area" />
+          <CreateFilmInput type='number' defaultValue={film.area} onChange1={(e:any)=> setFilm({ ...film, area: e.target.value })}  requiredIcon name="area" label="area" control={control} placeholder="Enter your area" />
         </FormControl>
 
         <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
           <InputLabel shrink htmlFor="bootstrap-input">
-            orientation
+          PricePerArea
+          </InputLabel>
+          <CreateFilmInput type='number' defaultValue={film.pricePerArea} onChange1={(e:any)=> setFilm({ ...film, pricePerArea: e.target.value })}  requiredIcon name="pricePerArea" label="pricePerArea" control={control} placeholder="Enter your pricePerArea" />
+        </FormControl>
+
+        <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
+          <InputLabel shrink htmlFor="bootstrap-input">
+            Orientation
           </InputLabel>
           <CreateFilmInput defaultValue={film.orientation} onChange1={(e:any)=> setFilm({ ...film, orientation: e.target.value })}  requiredIcon name="orientation" label="orientation" control={control} placeholder="Enter your orientation" />
         </FormControl>
 
         <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
           <InputLabel shrink htmlFor="bootstrap-input">
-            bedrooms
+            Bedrooms
           </InputLabel>
           <CreateFilmInput defaultValue={film.bedrooms} onChange1={(e:any)=> setFilm({ ...film, bedrooms: e.target.value })} type="number" requiredIcon name="bedrooms" label="bedrooms" control={control} placeholder="Enter your bedrooms" />
         </FormControl>
 
         <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
           <InputLabel shrink htmlFor="bootstrap-input">
-            bathrooms
+            Bathrooms
           </InputLabel>
           <CreateFilmInput defaultValue={film.bathrooms} onChange1={(e:any)=> setFilm({ ...film, bathrooms: e.target.value })} type="number" requiredIcon name="bathrooms" label="bathrooms" control={control} placeholder="Enter your bathrooms" />
         </FormControl>
@@ -348,7 +376,7 @@ const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
             placeholder="Hướng nhà "
           />
     </FormControl>
-    <FormControl variant="standard" sx={{ width: '100%', marginTop: '5px' }}>
+    <FormControl variant="standard" sx={{ width: '100%', marginTop: '20px' }}>
           <InputLabel shrink htmlFor="image-upload" style={{top: "-10px"}}>
             Upload Images
           </InputLabel>
@@ -372,14 +400,18 @@ const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
 
         <div style={{ marginTop: '20px' }}>
           {images.length > 0 && (
-            <div>
+            <div style={{display: 'flex', flexWrap: "wrap"}}>
               {images.map((image: any, index:number) => (
-                <img
-                  key={index}
-                  src={`http://localhost:3000/assets/images/${image}`}
-                  alt={`preview-${index}`}
-                  style={{ width: '100px', height: '100px', margin: '5px' }}
-                />
+                <div  key={index}>
+                  <img
+                    src={`http://localhost:3000/images/${image}`}
+                    alt={`preview-${index}`}
+                    style={{ width: '100px', height: '100px', margin: '5px' }}
+                  />
+                  <IconButton aria-label="close" onClick={() => handleClose(image)}>
+                <CloseIcon />
+              </IconButton>
+                  </div>
               ))}
             </div>
           )}
@@ -396,9 +428,9 @@ const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
           {loading ? <CircularProgress color="secondary" /> : 'Edit'}
         </Button>
       </MainWrapper>
-      <CloseIcon>
+      <CloseIconBtn>
         <HighlightOffOutlinedIcon onClick={() => dispatch(setField(null))} />
-      </CloseIcon>
+      </CloseIconBtn>
     </Container>
   );
 };

@@ -38,19 +38,19 @@ export const Dashboard  = () => {
     if(listing){
       setViews({
         total_bds: listing.length ?? 0,
-        total_bds_sell: [...listing].filter((item:any) => {
-          if(item.type.length > 0){
-                  return item.type[0]?.name === 'sell'
-          }
-          return null;
-      })?.length,
+        total_users: users?.length ?? 0,
         total_bds_rent: [...listing].filter((item:any) => {
           if(item.type.length > 0){
                   return item.type[0]?.name === 'rent'
           }
           return null;
       })?.length,
-        total_users: users?.length ?? 0,
+        total_bds_sell: [...listing].filter((item:any) => {
+          if(item.type.length > 0){
+                  return item.type[0]?.name === 'sell'
+          }
+          return null;
+      })?.length,
         total_news: news?.length ?? 0,
         total_bds_done: [...listing].filter(item => item.status !== 'pending').length ?? 0,
       })
@@ -63,7 +63,7 @@ export const Dashboard  = () => {
         return <CardItem key={index} title ={title[index]} number={Object.values(views)[index]} />
      })}
       </div>
-      <div className="chart-container" style={{width: "100%", height: '700px'}}>
+      <div className="chart-container" style={{width: "100%", maxHeight: '500px'}}>
        <PriceChart data={date && date} />
 
       </div>

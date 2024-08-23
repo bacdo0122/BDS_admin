@@ -79,7 +79,6 @@ export const SearchView = (layout:any) => {
   }
   const handleKeyPress = (e:any)=>{
       if(e.key === "Enter"){
-        console.log("value:", e.target.value)
         setSearch({
           type:"search",
           value: e.target.value
