@@ -1,5 +1,5 @@
-import React, { useRef, useState } from 'react';
-import { styled, Box, BoxProps, TextField, alpha, FormControl, Button, InputLabel } from '@mui/material';
+import React, { ChangeEvent, useCallback, useRef, useState } from 'react';
+import { styled, Box, BoxProps, TextField, alpha, FormControl, Button, InputLabel, IconButton } from '@mui/material';
 import { useAppDispatch, useAppSelector } from 'stores/hook';
 import { CreateNewNews } from 'apis/news';
 import { setField, setReset } from 'reducers/Film';
@@ -9,7 +9,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { createBannerSchema } from '../../../helpers/validation';
 import CreateFilmInput from '../../../Inputs/createFilmInput';
-
+import CloseIcon from '@mui/icons-material/Close';
 const Container = styled(Box)<BoxProps>({
   width: '50%',
   height: '80%',
@@ -64,7 +64,7 @@ const BootstrapInput = styled(TextField)(({ theme }) => ({
     },
   },
 }));
-const CloseIcon = styled(Box)<BoxProps>({
+const CloseIconBtn = styled(Box)<BoxProps>({
   position: 'absolute',
   right: '4%',
   top: '4%',
@@ -100,11 +100,40 @@ export const CreateNews = () => {
     },
     resolver: yupResolver(createBannerSchema),
   });
+
+  const [images, setImages] = useState<File[]>([]);
+
+  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+    console.log("event:", event.target)
+    if (event.target.files) {
+      // Chuyển đổi FileList thành mảng
+      const newFiles = Array.from(event.target.files);
+      // Kết hợp tệp mới với các tệp hiện tại
+      setImages(prevImages => [...prevImages, ...newFiles]);
+    }
+  };
+
+  const handleClose = useCallback((indexImage: number) => {
+
+    const newImages = [...images].filter((image, index) => index !== indexImage);
+    setImages(newImages)
+  }, [images])
+
   const handleCreateBanner = async () => {
-    await CreateNewNews(value.title, value.content, value.userId, value.category_id);
+    const image_string = images.reduce((item:any, value:any, index:number) => {
+      let currentValue = ``;
+      if(index === 0){
+         currentValue =  item += `${value.name}`;
+      }
+      else currentValue =  item += `;${value.name}`;
+      return currentValue;
+    }, '')
+    console.log("image_string:", image_string)
+    await CreateNewNews(value.title, value.content, value.userId, value.category_id, String(image_string));
     dispatch(setField(null));
     dispatch(setReset(!reset));
   };
+
   return (
     <Container>
       <MainWrapper>
@@ -165,6 +194,48 @@ export const CreateNews = () => {
           />
         </FormControl>
 
+        <FormControl variant="standard" sx={{ width: '100%', marginTop: '20px' }}>
+          <InputLabel shrink htmlFor="image-upload" style={{ top: '-10px' }}>
+            Upload Images
+          </InputLabel>
+          <input
+            type="file"
+            id="image-upload"
+            multiple
+            accept="image/*"
+            onChange={handleImageChange}
+            style={{ display: 'none' }}
+          />
+          <Button
+            variant="contained"
+            component="label"
+            htmlFor="image-upload"
+            style={{ marginTop: '10px', width: '100%' }}
+          >
+            Choose Images
+          </Button>
+        </FormControl>
+
+        <div style={{ marginTop: '20px' }}>
+          {images.length > 0 && (
+            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+              {images.map((image, index) => (
+                <div key={index}>
+                  <img
+                    key={index}
+                    src={URL.createObjectURL(image)}
+                    alt={`preview-${index}`}
+                    style={{ width: '100px', height: '100px', margin: '5px' }}
+                  />
+                  <IconButton aria-label="close" onClick={() => handleClose(index)}>
+                    <CloseIcon />
+                  </IconButton>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
         <Button
           variant="contained"
           disabled={!isValid}
@@ -174,9 +245,9 @@ export const CreateNews = () => {
           Create
         </Button>
       </MainWrapper>
-      <CloseIcon>
+      <CloseIconBtn>
         <HighlightOffOutlinedIcon onClick={() => dispatch(setField(null))} />
-      </CloseIcon>
+      </CloseIconBtn>
     </Container>
   );
 };

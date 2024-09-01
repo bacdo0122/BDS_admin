@@ -73,15 +73,15 @@ const CloseIcon = styled(Box)<BoxProps>({
   cursor: 'pointer',
 });
 interface Region {
-  district: string;
-  ward: string;
+  name: string;
+  wardId: number;
 }
 export const CreateRegion = () => {
   const dispatch = useAppDispatch();
   const reset = useAppSelector((state: any) => state.films.reset);
   const [value, setValue] = React.useState<Region>({
-    district: '',
-    ward: '',
+    name: '',
+    wardId: 0,
   });
   const {
     setError,
@@ -91,13 +91,13 @@ export const CreateRegion = () => {
   } = useForm<Region>({
     mode: 'onChange',
     defaultValues: {
-      district: '',
-      ward: '',
+      name: '',
+    wardId: 0,
     },
     resolver: yupResolver(createBannerSchema),
   });
   const handleCreateBanner = async () => {
-    await CreateNewRegion(value.district,value.ward );
+    await CreateNewRegion(value.name,value.wardId );
     dispatch(setField(null));
     dispatch(setReset(!reset));
   };
@@ -107,28 +107,29 @@ export const CreateRegion = () => {
         <Label>Create Region</Label>
         <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
           <InputLabel shrink htmlFor="bootstrap-input">
-         District
+         Name
           </InputLabel>
           <CreateFilmInput
-            onChange1={(e: any) => setValue({ ...value, district: e.target.value })}
+            onChange1={(e: any) => setValue({ ...value, name: e.target.value })}
             requiredIcon
-            name="district"
-            label="district"
+            name="name"
+            label="name"
             control={control}
-            placeholder="Enter your district"
+            placeholder="Enter your name"
           />
         </FormControl>
         <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
           <InputLabel shrink htmlFor="bootstrap-input">
-          Ward
+          Ward Id
           </InputLabel>
           <CreateFilmInput
-            onChange1={(e: any) => setValue({ ...value, ward: e.target.value })}
+            onChange1={(e: any) => setValue({ ...value, wardId: e.target.value })}
+            type='number'
             requiredIcon
-            name="ward"
-            label="ward"
+            name="wardId"
+            label="wardId"
             control={control}
-            placeholder="Enter your ward"
+            placeholder="Enter your wardId"
           />
         </FormControl>
 

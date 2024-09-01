@@ -79,8 +79,8 @@ const CloseIcon = styled(Box)<BoxProps>({
 });
 interface Banner {
   id: string;
-  district: string;
-  ward: string;
+  name: string;
+  wardId: number;
 }
 export const EditRegion = () => {
   const dispatch = useAppDispatch();
@@ -88,8 +88,8 @@ export const EditRegion = () => {
   const detail = useAppSelector((state: any) => state.films.detail);
   const [value, setValue] = React.useState<Banner>({
     id: detail && detail.id,
-    district:detail && detail.district,
-    ward:detail && detail.ward,
+    name:detail && detail.name,
+    wardId:detail && detail.wardId,
   });
   const {
     setError,
@@ -99,46 +99,47 @@ export const EditRegion = () => {
   } = useForm<Banner>({
     mode: 'onChange',
     defaultValues: {
-      district:detail && detail.district,
-      ward:detail && detail.ward,
+      name:detail && detail.name,
+      wardId:detail && detail.wardId,
     },
     resolver: yupResolver(createBannerSchema),
   });
   const handleEditBanner = async () => {
-    await EditExisRegion(value.id, value.district, value.ward);
+    await EditExisRegion(value.id, value.name, value.wardId);
     dispatch(setField(null));
     dispatch(setReset(!reset));
   };
   return (
     <Container>
       <MainWrapper>
-        <Label>Edit News Category</Label>
+        <Label>Edit Region</Label>
         <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
           <InputLabel shrink htmlFor="bootstrap-input">
-          District
+          Name
           </InputLabel>
           <CreateFilmInput
-          defaultValue={value.district}
-            onChange1={(e: any) => setValue({ ...value, district: e.target.value })}
+          defaultValue={value.name}
+            onChange1={(e: any) => setValue({ ...value, name: e.target.value })}
             requiredIcon
-            name="district"
-            label="district"
+            name="name"
+            label="name"
             control={control}
-            placeholder="Enter your district"
+            placeholder="Enter your name"
           />
         </FormControl>
         <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
           <InputLabel shrink htmlFor="bootstrap-input">
-            Ward
+           WardId
           </InputLabel>
           <CreateFilmInput
-                    defaultValue={value.ward}
-            onChange1={(e: any) => setValue({ ...value, ward: e.target.value })}
+                    defaultValue={value.wardId}
+                    type='number'
+            onChange1={(e: any) => setValue({ ...value, wardId: e.target.value })}
             requiredIcon
-            name="ward"
-            label="ward"
+            name="wardId"
+            label="wardId"
             control={control}
-            placeholder="Enter your ward"
+            placeholder="Enter your wardId"
           />
         </FormControl>
 

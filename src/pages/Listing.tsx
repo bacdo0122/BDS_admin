@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from 'stores/hook';
 import { HeaderCommon } from '../components/Header/common'
 import {Table} from '../components/common/table'
 import { SearchLayout } from 'components/Search';
-import { Box,Button } from '@mui/material';
+import { Avatar, Box,Button } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import {confirmListing, deleteListing, deleteUser} from "../components/common/table/action";
 import {  GridValueGetterParams,GridActionsCellItem} from '@mui/x-data-grid';
@@ -60,6 +60,18 @@ const Listing = () => {
     },
     { field: 'status', headerName: 'Tình trạng', width: 150
     },
+    {field: 'image', headerName: 'Anh', width: 300,
+      renderCell: (params:any) => {
+        const images = params.value.split(";");
+       return images.map((image:string) => {
+          return (
+            <>
+              <Avatar src={`http://localhost:3000/images/${image}`} />
+            </>
+          );
+        })
+      }
+     },
     {
     field: 'actions',
     type: 'actions',

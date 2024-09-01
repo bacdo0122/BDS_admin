@@ -99,6 +99,12 @@ export const DetailUser = ()=>{
                 </InputLabel>
                 <BootstrapInput value={detail.name} disabled placeholder='Enter Name' id="bootstrap-input" />
             </FormControl>
+              <FormControl variant="standard" sx={{width: "100%", marginTop:"10px"}}>
+                <InputLabel shrink htmlFor="bootstrap-input">
+                Phone Number
+                </InputLabel>
+                <BootstrapInput type='number' value={detail.phone_number} disabled placeholder='Enter phone' id="bootstrap-input" />
+            </FormControl>
             <FormControl variant="standard" sx={{width: "100%", marginTop:"10px"}}>
                 <InputLabel shrink htmlFor="bootstrap-input">
                 Email

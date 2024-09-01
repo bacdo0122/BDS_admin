@@ -78,7 +78,6 @@ const CreateOptionInput = <
     name,
     defaultValue,
   });
-  console.log("dfvalue", defaultValue !== undefined ? defaultValue : '')
   return (
     <Box {...props}  sx={{
       marginTop: '20px',

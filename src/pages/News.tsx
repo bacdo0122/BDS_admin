@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from 'stores/hook';
 import { HeaderCommon } from '../components/Header/common'
 import {Table} from '../components/common/table'
 import { SearchLayout } from 'components/Search';
-import { Box,Button } from '@mui/material';
+import { Avatar, Box,Button } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { deleteNews} from "../components/common/table/action";
 import {  GridValueGetterParams,GridActionsCellItem} from '@mui/x-data-grid';
@@ -16,6 +16,19 @@ const News = () => {
   const  columnsCategories = [
     {field: 'title', headerName: 'Tên', width: 300 },
     {field: 'content', headerName: 'Mô tả', width: 300 },
+    {field: 'image', headerName: 'Anh', width: 300,
+      renderCell: (params:any) => {
+        const images = params.value.split(";");
+        console.log("images:", images)
+       return images.map((image:string) => {
+          return (
+            <>
+              <Avatar src={`http://localhost:3000/images/${image}`} />
+            </>
+          );
+        })
+      }
+     },
     {
     field: 'actions',
     type: 'actions',

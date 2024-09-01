@@ -18,6 +18,7 @@ import {ExecLogin} from '../apis/auth'
 import { setAccessToken, setRefreshToken } from 'helpers/localStorage';
 import { setAuthenticated } from 'reducers';
 import { getErrorMessage } from 'helpers/message';
+import {jwtDecode, JwtPayload} from 'jwt-decode';
 const theme = createTheme();
 
 const MainWrap = styled(Box)<BoxProps>(() => ({
@@ -36,6 +37,11 @@ const ErrorText = styled(Typography)<TypographyProps>({
 interface LoginInputs {
   email: string;
   password: string;
+}
+
+interface CustomJwtPayload extends JwtPayload {
+  role: string;
+  // Bạn có thể thêm các thuộc tính khác nếu cần
 }
 const Login = () => {
   const dispatch = useAppDispatch();
@@ -60,11 +66,17 @@ const Login = () => {
     
     try {
       const {accessToken, refreshToken} = await ExecLogin(email, password);
-      
-      setAccessToken(accessToken);
-      setRefreshToken(refreshToken);
-      dispatch(setAuthenticated(true));
-      navigate("/");
+      const decoded = jwtDecode<CustomJwtPayload>(accessToken);
+      console.log("asd:", decoded)
+      if(decoded && decoded?.role === 'admin' ){
+        setAccessToken(accessToken);
+        setRefreshToken(refreshToken); 
+        dispatch(setAuthenticated(true));
+        navigate("/");
+      } else{
+        const errorMsg = 'Bạn ko có quyền truy cập';
+        setSubmitErr(errorMsg);
+      }
     } catch (error:any) {
       setError('email', {});
       setError('password', {});

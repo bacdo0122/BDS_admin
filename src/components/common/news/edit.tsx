@@ -1,5 +1,5 @@
-import React, { useRef, useState } from 'react';
-import { styled, Box, BoxProps, TextField, alpha, FormControl, Button, InputLabel } from '@mui/material';
+import React, { ChangeEvent, useCallback, useRef, useState } from 'react';
+import { styled, Box, BoxProps, TextField, alpha, FormControl, Button, InputLabel, IconButton } from '@mui/material';
 import { useAppDispatch, useAppSelector } from 'stores/hook';
 import { setField, setReset } from 'reducers/Film';
 import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
@@ -16,6 +16,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { createBannerSchema } from '../../../helpers/validation';
 import CreateFilmInput from '../../../Inputs/createFilmInput';
 import { EditExisNews } from '../../../apis/news';
+import CloseIcon from '@mui/icons-material/Close';
 const Container = styled(Box)<BoxProps>({
   width: '50%',
   height: '80%',
@@ -69,7 +70,7 @@ const BootstrapInput = styled(TextField)(({ theme }) => ({
     },
   },
 }));
-const CloseIcon = styled(Box)<BoxProps>({
+const CloseIconBtn = styled(Box)<BoxProps>({
   position: 'absolute',
   right: '4%',
   top: '4%',
@@ -108,15 +109,39 @@ export const EditBanner = () => {
     },
     resolver: yupResolver(createBannerSchema),
   });
+  const [images, setImages] = useState(detail && detail.image.length > 1 ? detail.image.split(";") : [detail.image]);
+
+const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+  if (event.target.files) {
+    // Chuyển đổi FileList thành mảng
+    const newFiles = Array.from(event.target.files);
+    // Kết hợp tệp mới với các tệp hiện tại
+    setImages((prevImages:any) => [...prevImages, ...newFiles.map(image => image.name)]);
+  }
+};
+const handleClose = useCallback((imageTarget: string) => {
+
+  const newImages = [...images].filter(image => image !== imageTarget);
+  console.log("newImages:", newImages)
+  setImages(newImages)
+}, [images])
   const handleEditBanner = async () => {
-    await EditExisNews(value.id, value.title, value.content, value.userId, value.category_id);
+    const image_string = images.reduce((item:any, value:any, index:number) => {
+      let currentValue = ``;
+      if(index === 0){
+         currentValue =  item += `${value}`;
+      }
+      else currentValue =  item += `;${value}`;
+     return currentValue;
+    }, '')
+    await EditExisNews(value.id, value.title, value.content, value.userId, value.category_id, String(image_string));
     dispatch(setField(null));
     dispatch(setReset(!reset));
   };
   return (
     <Container>
       <MainWrapper>
-        <Label>Edit Banner</Label>
+        <Label>Edit News</Label>
         <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
           <InputLabel shrink htmlFor="bootstrap-input">
             Content
@@ -176,6 +201,46 @@ export const EditBanner = () => {
             placeholder="Enter your category_id"
           />
         </FormControl>
+        <FormControl variant="standard" sx={{ width: '100%', marginTop: '20px' }}>
+          <InputLabel shrink htmlFor="image-upload" style={{top: "-10px"}}>
+            Upload Images
+          </InputLabel>
+          <input
+            type="file"
+            id="image-upload"
+            multiple
+            accept="image/*"
+            onChange={handleImageChange}
+            style={{ display: 'none' }}
+          />
+          <Button
+            variant="contained"
+            component="label"
+            htmlFor="image-upload"
+            style={{ marginTop: '10px', width: '100%' }}
+          >
+            Choose Images
+          </Button>
+        </FormControl>
+
+        <div style={{ marginTop: '20px' }}>
+          {images.length > 0 && (
+            <div style={{display: 'flex', flexWrap: "wrap"}}>
+              {images.map((image: any, index:number) => (
+                <div  key={index}>
+                  <img
+                    src={`http://localhost:3000/images/${image}`}
+                    alt={`preview-${index}`}
+                    style={{ width: '100px', height: '100px', margin: '5px' }}
+                  />
+                  <IconButton aria-label="close" onClick={() => handleClose(image)}>
+                <CloseIcon />
+              </IconButton>
+                  </div>
+              ))}
+            </div>
+          )}
+        </div>
 
         <Button variant="contained"  disabled={!isValid}
           onClick={handleSubmit(handleEditBanner)}
@@ -183,9 +248,9 @@ export const EditBanner = () => {
           Edit
         </Button>
       </MainWrapper>
-      <CloseIcon>
+      <CloseIconBtn>
         <HighlightOffOutlinedIcon onClick={() => dispatch(setField(null))} />
-      </CloseIcon>
+      </CloseIconBtn>
     </Container>
   );
 };

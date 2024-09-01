@@ -81,12 +81,12 @@ const CloseIcon = styled(Box)<BoxProps>({
 export const DetailBanner = ()=>{
     const dispatch = useAppDispatch();
     const detail = useAppSelector((state:any)=>state.films.detail)
-  
+    const [images, setImages] = useState(detail && detail.image.length > 1 ? detail.image.split(";") : [detail.image]);
     
     
     return <Container>
             <MainWrapper>
-                <Label>Detail Banner</Label>
+                <Label>Detail News</Label>
               <FormControl variant="standard" sx={{width: "100%", marginTop:"10px"}}>
                 <InputLabel shrink htmlFor="bootstrap-input">
                 Title
@@ -111,6 +111,26 @@ export const DetailBanner = ()=>{
                 </InputLabel>
                 <BootstrapInput value={detail.category_id} disabled placeholder='Enter Name' id="bootstrap-input" />
             </FormControl>
+
+            <FormControl variant="standard" sx={{width: "100%", marginTop:"10px"}}>
+            <InputLabel shrink htmlFor="bootstrap-input">
+                Image
+                </InputLabel>
+            </FormControl>
+        <div style={{ marginTop: '20px' }}>
+          {images.length > 0 && (
+            <div>
+              {images.map((image: any, index:number) => (
+                <img
+                  key={index}
+                  src={`http://localhost:3000/images/${image}`}
+                  alt={`preview-${index}`}
+                  style={{ width: '100px', height: '100px', margin: '5px' }}
+                />
+              ))}
+            </div>
+          )}
+        </div>
                        
             </MainWrapper>
            <CloseIcon>

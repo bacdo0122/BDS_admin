@@ -40,14 +40,14 @@ export const Dashboard  = () => {
         total_bds: listing.length ?? 0,
         total_users: users?.length ?? 0,
         total_bds_rent: [...listing].filter((item:any) => {
-          if(item.type.length > 0){
-                  return item.type[0]?.name === 'rent'
+          if(item.type){
+                  return item.type?.name === 'rent'
           }
           return null;
       })?.length,
         total_bds_sell: [...listing].filter((item:any) => {
-          if(item.type.length > 0){
-                  return item.type[0]?.name === 'sell'
+          if(item.type){
+                  return item.type.name === 'sell'
           }
           return null;
       })?.length,

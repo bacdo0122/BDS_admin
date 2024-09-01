@@ -217,14 +217,13 @@ export const Pop = () => {
     // formstate has the errors
   const handleCreateFilm : SubmitHandler<newListing> = async () => {
     setLoading(true);
-    console.log("images:", images)
     const image_string = images.reduce((item:any, value:any, index:number) => {
       let currentValue = ``;
       if(index === 0){
-         currentValue =  item += `${value}`;
+         currentValue =  item += `${value.name}`;
       }
-      else currentValue =  item += `;${value}`;
-     return currentValue;
+      else currentValue =  item += `;${value.name}`;
+      return currentValue;
     }, '')
     // const formData = new FormData();
     // if (film.url) {
@@ -258,16 +257,31 @@ export const Pop = () => {
         <Label>Tạo tin rao</Label>
         <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
           <InputLabel shrink htmlFor="bootstrap-input">
-          ID khu vực
+            ID khu vực
           </InputLabel>
-          <CreateFilmInput 
-          onChange1={(e:any)=> setFilm({ ...film, regionId: e.target.value })} requiredIcon name="regionId" label="regionId" type="number" control={control} placeholder="Enter your bds ID" />
+          <CreateFilmInput
+            onChange1={(e: any) => setFilm({ ...film, regionId: e.target.value })}
+            requiredIcon
+            name="regionId"
+            label="regionId"
+            type="number"
+            control={control}
+            placeholder="Enter your bds ID"
+          />
         </FormControl>
         <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
           <InputLabel shrink htmlFor="bootstrap-input">
-          ID ngừoi dùng
+            ID ngừoi dùng
           </InputLabel>
-          <CreateFilmInput onChange1={(e:any)=> setFilm({ ...film, userId: e.target.value })} type="number" requiredIcon name="userId" label="userID" control={control} placeholder="Enter your user ID" />
+          <CreateFilmInput
+            onChange1={(e: any) => setFilm({ ...film, userId: e.target.value })}
+            type="number"
+            requiredIcon
+            name="userId"
+            label="userID"
+            control={control}
+            placeholder="Enter your user ID"
+          />
 
           {/* <BootstrapInput
             onChange={(e: any) => setFilm({ ...film, score: e.target.value })}
@@ -278,71 +292,145 @@ export const Pop = () => {
         </FormControl>
         <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
           <InputLabel shrink htmlFor="bootstrap-input">
-          Giá
+            Tiêu đề
           </InputLabel>
-          <CreateFilmInput onChange1={(e:any)=> setFilm({ ...film, price: e.target.value })} type="number" requiredIcon name="price" label="Price" control={control} placeholder="Enter your Price" />
+          <CreateFilmInput
+            onChange1={(e: any) => setFilm({ ...film, title: e.target.value })}
+            requiredIcon
+            name="title"
+            label="title"
+            control={control}
+            placeholder="Enter your title"
+          />
+        </FormControl>
 
-          {/* <BootstrapInput
-            onChange={(e: any) => setFilm({ ...film, score: e.target.value })}
+        <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
+          <InputLabel shrink htmlFor="bootstrap-input">
+            Mô tả
+          </InputLabel>
+          <CreateFilmInput
+            onChange1={(e: any) => setFilm({ ...film, description: e.target.value })}
+            requiredIcon
+            name="description"
+            label="description"
+            control={control}
+            placeholder="Enter your description"
+          />
+        </FormControl>
+
+        <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
+          <InputLabel shrink htmlFor="bootstrap-input">
+            Địa chỉ
+          </InputLabel>
+          <CreateFilmInput
+            onChange1={(e: any) => setFilm({ ...film, address: e.target.value })}
+            requiredIcon
+            name="address"
+            label="address"
+            control={control}
+            placeholder="Enter your address"
+          />
+        </FormControl>
+
+        <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
+          <InputLabel shrink htmlFor="bootstrap-input">
+            Diện tích
+          </InputLabel>
+          <CreateFilmInput
             type="number"
-            placeholder="Enter Score"
-            id="bootstrap-input"
-          /> */}
+            onChange1={(e: any) => setFilm({ ...film, area: e.target.value })}
+            requiredIcon
+            name="area"
+            label="area"
+            control={control}
+            placeholder="Enter your area"
+          />
+        </FormControl>
+        <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
+          <CreateOptionInput
+            onChange1={(event: any, value: any) => setFilm({ ...film, type_id: value.id })}
+            options={listing_types ? listing_types.map((item: any) => ({ id: item.id, name: item.name })) : []}
+            requiredIcon
+            name="type_id"
+            label="Loại tin rao"
+            control={control}
+            placeholder="Loại tin rao "
+          />
         </FormControl>
         <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
           <InputLabel shrink htmlFor="bootstrap-input">
-          Tiêu đề
+            {(film.type_id === 2 || film.type_id === 0 )? "Giá" : "Giá cho thuê"}
           </InputLabel>
-          <CreateFilmInput onChange1={(e:any)=> setFilm({ ...film, title: e.target.value })}  requiredIcon name="title" label="title" control={control} placeholder="Enter your title" />
+          <CreateFilmInput
+            onChange1={(e: any) => setFilm({ ...film, price: e.target.value })}
+            type="number"
+            requiredIcon
+            name="price"
+            label="Price"
+            control={control}
+            placeholder="Enter your Price"
+          />
+        </FormControl>
+        {film.type_id === 2 && (
+          <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
+            <InputLabel shrink htmlFor="bootstrap-input">
+              Giá mỗi m2
+            </InputLabel>
+            <CreateFilmInput
+              type="number"
+              onChange1={(e: any) => setFilm({ ...film, pricePerArea: e.target.value })}
+              requiredIcon
+              name="pricePerArea"
+              label="pricePerArea"
+              control={control}
+              placeholder="Enter your pricePerArea"
+            />
+          </FormControl>
+        )}
+
+
+        <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
+          <InputLabel shrink htmlFor="bootstrap-input">
+            Tiện nghi
+          </InputLabel>
+          <CreateFilmInput
+            onChange1={(e: any) => setFilm({ ...film, orientation: e.target.value })}
+            requiredIcon
+            name="orientation"
+            label="orientation"
+            control={control}
+            placeholder="Enter your orientation"
+          />
         </FormControl>
 
         <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
           <InputLabel shrink htmlFor="bootstrap-input">
-          Mô tả
+            Số phòng ngủ
           </InputLabel>
-          <CreateFilmInput onChange1={(e:any)=> setFilm({ ...film, description: e.target.value })}  requiredIcon name="description" label="description" control={control} placeholder="Enter your description" />
+          <CreateFilmInput
+            onChange1={(e: any) => setFilm({ ...film, bedrooms: e.target.value })}
+            type="number"
+            requiredIcon
+            name="bedrooms"
+            label="bedrooms"
+            control={control}
+            placeholder="Enter your bedrooms"
+          />
         </FormControl>
 
         <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
           <InputLabel shrink htmlFor="bootstrap-input">
-          Địa chỉ
+            Số phòng tắm
           </InputLabel>
-          <CreateFilmInput onChange1={(e:any)=> setFilm({ ...film, address: e.target.value })}  requiredIcon name="address" label="address" control={control} placeholder="Enter your address" />
-        </FormControl>
-
-        <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
-          <InputLabel shrink htmlFor="bootstrap-input">
-          Diện tích
-          </InputLabel>
-          <CreateFilmInput type="number" onChange1={(e:any)=> setFilm({ ...film, area: e.target.value })}  requiredIcon name="area" label="area" control={control} placeholder="Enter your area" />
-        </FormControl>
-
-        <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
-          <InputLabel shrink htmlFor="bootstrap-input">
-          Giá mỗi m2
-          </InputLabel>
-          <CreateFilmInput type="number" onChange1={(e:any)=> setFilm({ ...film, pricePerArea: e.target.value })}  requiredIcon name="pricePerArea" label="pricePerArea" control={control} placeholder="Enter your pricePerArea" />
-        </FormControl>
-
-        <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
-          <InputLabel shrink htmlFor="bootstrap-input">
-          Tiện nghi
-          </InputLabel>
-          <CreateFilmInput onChange1={(e:any)=> setFilm({ ...film, orientation: e.target.value })}  requiredIcon name="orientation" label="orientation" control={control} placeholder="Enter your orientation" />
-        </FormControl>
-
-        <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
-          <InputLabel shrink htmlFor="bootstrap-input">
-          Số phòng ngủ
-          </InputLabel>
-          <CreateFilmInput onChange1={(e:any)=> setFilm({ ...film, bedrooms: e.target.value })} type="number" requiredIcon name="bedrooms" label="bedrooms" control={control} placeholder="Enter your bedrooms" />
-        </FormControl>
-
-        <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
-          <InputLabel shrink htmlFor="bootstrap-input">
-          Số phòng tắm
-          </InputLabel>
-          <CreateFilmInput onChange1={(e:any)=> setFilm({ ...film, bathrooms: e.target.value })} type="number" requiredIcon name="bathrooms" label="bathrooms" control={control} placeholder="Enter your bathrooms" />
+          <CreateFilmInput
+            onChange1={(e: any) => setFilm({ ...film, bathrooms: e.target.value })}
+            type="number"
+            requiredIcon
+            name="bathrooms"
+            label="bathrooms"
+            control={control}
+            placeholder="Enter your bathrooms"
+          />
         </FormControl>
 
         <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
@@ -383,7 +471,7 @@ export const Pop = () => {
             onChange1={(event: any, value: any) => setFilm({ ...film, status_listing: value.label })}
             options={[
               { id: 1, name: 'pending' },
-              { id: 1, name: 'done' },
+              { id: 2, name: 'done' },
             ]}
             requiredIcon
             name="status_listing"
@@ -393,42 +481,35 @@ export const Pop = () => {
           />
         </FormControl>
 
-        <FormControl variant="standard" sx={{width: "100%", marginTop:"10px"}}>
-         <CreateOptionInput
+        <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
+          <CreateOptionInput
             onChange1={(event: any, value: any) => setFilm({ ...film, category_id: value.id })}
-            options={listing_categories ? listing_categories.map((item:any)=>({id: item.id, name: item.name})) : []}
+            options={
+              listing_categories ? listing_categories.map((item: any) => ({ id: item.id, name: item.name })) : []
+            }
             requiredIcon
             name="category_id"
             label="Chuyên mục tin rao"
             control={control}
             placeholder="Chuyên mục tin rao "
           />
-    </FormControl>
-    <FormControl variant="standard" sx={{width: "100%", marginTop:"10px"}}>
-         <CreateOptionInput
-            onChange1={(event: any, value: any) => setFilm({ ...film, type_id: value.id })}
-            options={listing_types ? listing_types.map((item:any)=>({id: item.id, name: item.name})) : []}
-            requiredIcon
-            name="type_id"
-            label="Loại tin rao"
-            control={control}
-            placeholder="Loại tin rao "
-          />
-    </FormControl>
-    <FormControl variant="standard" sx={{width: "100%", marginTop:"10px"}}>
-         <CreateOptionInput
+        </FormControl>
+        <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
+          <CreateOptionInput
             onChange1={(event: any, value: any) => setFilm({ ...film, direction_id: value.id })}
-            options={listing_directions ? listing_directions.map((item:any)=>({id: item.id, name: item.name})) : []}
+            options={
+              listing_directions ? listing_directions.map((item: any) => ({ id: item.id, name: item.name })) : []
+            }
             requiredIcon
             name="direction_id"
             label="Hướng nhà"
             control={control}
             placeholder="Hướng nhà "
           />
-    </FormControl>
+        </FormControl>
 
-    <FormControl variant="standard" sx={{ width: '100%', marginTop: '20px' }}>
-          <InputLabel shrink htmlFor="image-upload" style={{top: "-10px"}}>
+        <FormControl variant="standard" sx={{ width: '100%', marginTop: '20px' }}>
+          <InputLabel shrink htmlFor="image-upload" style={{ top: '-10px' }}>
             Upload Images
           </InputLabel>
           <input
@@ -451,19 +532,19 @@ export const Pop = () => {
 
         <div style={{ marginTop: '20px' }}>
           {images.length > 0 && (
-            <div style={{display: 'flex', flexWrap: "wrap"}}>
+            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
               {images.map((image, index) => (
-                 <div  key={index}>
-                <img
-                  key={index}
-                  src={URL.createObjectURL(image)}
-                  alt={`preview-${index}`}
-                  style={{ width: '100px', height: '100px', margin: '5px' }}
-                />
-                <IconButton aria-label="close" onClick={() => handleClose(index)}>
-                <CloseIcon />
-              </IconButton>
-              </div>
+                <div key={index}>
+                  <img
+                    key={index}
+                    src={URL.createObjectURL(image)}
+                    alt={`preview-${index}`}
+                    style={{ width: '100px', height: '100px', margin: '5px' }}
+                  />
+                  <IconButton aria-label="close" onClick={() => handleClose(index)}>
+                    <CloseIcon />
+                  </IconButton>
+                </div>
               ))}
             </div>
           )}
@@ -471,7 +552,7 @@ export const Pop = () => {
 
         <Button
           data-test="btn-film"
-          type='submit'
+          type="submit"
           style={{ marginTop: '10px', width: '90px', height: '40px' }}
           variant="contained"
           disabled={!isValid}

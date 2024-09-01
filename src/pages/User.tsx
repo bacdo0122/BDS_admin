@@ -19,6 +19,7 @@ const Cateogories = () => {
   
     {field: 'email', headerName: 'Email', width: 300 },
     {field: 'name', headerName: 'Tên', width: 300 },
+    {field: 'phone_number', headerName: 'Phone Number', width: 300 },
     {field: 'avatar', headerName: 'Avatar', width: 300,
     renderCell: (params:any) => {
       return (

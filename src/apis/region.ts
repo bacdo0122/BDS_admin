@@ -1,15 +1,15 @@
 import { axiosInstance } from 'apis';
 
-export const CreateNewRegion = async(district:string, ward: string)=>{
+export const CreateNewRegion = async(name:string, wardId: number)=>{
    return  await axiosInstance.post("/region/create", {
-        district, ward
+        name, wardId
     })
  
 }
 
-export const EditExisRegion = async(id:string, district:string, ward: string)=>{
+export const EditExisRegion = async(id:string, name:string, wardId: number)=>{
     return await axiosInstance.put("/region/edit", {
-        id, district, ward
+        id, name, wardId
     })
 
 }

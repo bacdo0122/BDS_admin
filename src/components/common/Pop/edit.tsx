@@ -155,15 +155,14 @@ export const Edit = () => {
 const listing_categories = useAppSelector((state: any) => state.actor?.allActor);
 const listing_types = useAppSelector((state:any)=>state.category.allCategory);
 const listing_directions = useAppSelector((state:any)=>state.direction.allDirection);
-console.log("detail:", detail)
 const [images, setImages] = useState(detail && detail.image.length > 1 ? detail.image.split(";") : [detail.image]);
 
 const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
   if (event.target.files) {
     // Chuyển đổi FileList thành mảng
-    const newFiles = Array(event.target.files[0].name);
+    const newFiles = Array.from(event.target.files);
     // Kết hợp tệp mới với các tệp hiện tại
-    setImages((prevImages:any) => [...prevImages, ...newFiles]);
+    setImages((prevImages:any) => [...prevImages, ...newFiles.map(image => image.name)]);
   }
 };
 
@@ -178,7 +177,6 @@ const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
       else currentValue =  item += `;${value}`;
      return currentValue;
     }, '')
-      console.log("image_string:", image_string)
     // const newArrayIdTypes = film.types.map((item: any) => String(item.id));
     // const newArrayIdCategories = film.categories.map((item: any) => String(item.id));
     // const formData = new FormData();
@@ -215,6 +213,8 @@ const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     console.log("newImages:", newImages)
     setImages(newImages)
   }, [images])
+
+  console.log("images:", images)
   return (
     <Container>
       <MainWrapper>
@@ -344,6 +344,7 @@ const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
 
         <FormControl variant="standard" sx={{width: "100%", marginTop:"10px"}}>
          <CreateOptionInput
+          defaultValue={detail?.category?.name}
             onChange1={(event: any, value: any) => setFilm({ ...film, category_id: value.id })}
             options={listing_categories ? listing_categories.map((item:any)=>({id: item.id, name: item.name})) : []}
             requiredIcon
@@ -354,7 +355,8 @@ const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
           />
     </FormControl>
     <FormControl variant="standard" sx={{width: "100%", marginTop:"10px"}}>
-         <CreateOptionInput
+         <CreateOptionInput 
+         defaultValue={detail?.type?.name}
             onChange1={(event: any, value: any) => setFilm({ ...film, type_id: value.id })}
             options={listing_types ? listing_types.map((item:any)=>({id: item.id, name: item.name})) : []}
             requiredIcon
@@ -367,6 +369,7 @@ const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
 
     <FormControl variant="standard" sx={{width: "100%", marginTop:"10px"}}>
          <CreateOptionInput
+             defaultValue={detail?.direction?.name}
             onChange1={(event: any, value: any) => setFilm({ ...film, direction_id: value.id })}
             options={listing_directions ? listing_directions.map((item:any)=>({id: item.id, name: item.name})) : []}
             requiredIcon

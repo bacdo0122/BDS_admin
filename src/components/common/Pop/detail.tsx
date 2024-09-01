@@ -95,7 +95,6 @@ export const Detail = () => {
     const [images, setImages] = useState(detail && detail.image.length > 1 ? detail.image.split(";") : [detail.image]);
 
 
-    console.log("detail:", detail)
 
     return <Container>
          <MainWrapper>
@@ -226,26 +225,11 @@ export const Detail = () => {
                 </List>
             </nav>
         
-            <FormControl variant="standard" sx={{ width: '100%', marginTop: '5px' }}>
-          <InputLabel shrink htmlFor="image-upload" style={{top: "-10px"}}>
-            Upload Images
-          </InputLabel>
-          <input
-            type="file"
-            id="image-upload"
-            multiple
-            accept="image/*"
-            style={{ display: 'none' }}
-          />
-          <Button
-            variant="contained"
-            component="label"
-            htmlFor="image-upload"
-            style={{ marginTop: '10px', width: '100%' }}
-          >
-            Choose Images
-          </Button>
-        </FormControl>
+            <FormControl variant="standard" sx={{width: "100%", marginTop:"10px"}}>
+            <InputLabel shrink htmlFor="bootstrap-input">
+                Image
+                </InputLabel>
+            </FormControl>
 
         <div style={{ marginTop: '20px' }}>
           {images.length > 0 && (
@@ -253,7 +237,7 @@ export const Detail = () => {
               {images.map((image: any, index:number) => (
                 <img
                   key={index}
-                  src={`http://localhost:3000/assets/images/${image}`}
+                  src={`http://localhost:3000/images/${image}`}
                   alt={`preview-${index}`}
                   style={{ width: '100px', height: '100px', margin: '5px' }}
                 />

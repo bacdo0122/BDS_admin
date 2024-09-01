@@ -74,6 +74,7 @@ interface User {
   name: string;
   email: string;
   password: string;
+  phone_number: string;
 }
 export const CreateUser = () => {
   const dispatch = useAppDispatch();
@@ -82,6 +83,7 @@ export const CreateUser = () => {
     name: '',
     email: '',
     password: '',
+    phone_number: ''
   });
   const {
     setError,
@@ -94,12 +96,13 @@ export const CreateUser = () => {
       name: '',
       email: '',
       password: '',
+      phone_number: ''
     },
     resolver: yupResolver(createUserSchema),
   });
 
   const handleCreateUser = async () => {
-    await CreateNewuser(value.name, value.email, value.password);
+    await CreateNewuser(value.name, value.email, value.password, value.phone_number);
     dispatch(setField(null));
     dispatch(setReset(!reset));
   };
@@ -147,7 +150,20 @@ export const CreateUser = () => {
             control={control}
             placeholder="Enter your Password"
           />
-          {/* <BootstrapInput value={value.password} onChange={(e:any)=> setValue({...value,password:e.target.value})} placeholder='Enter Password' id="bootstrap-input" /> */}
+        </FormControl>
+        <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
+          <InputLabel shrink htmlFor="bootstrap-input">
+            Phone Number
+          </InputLabel>
+          <CreateFilmInput
+                    type='number'
+            onChange1={(e: any) => setValue({ ...value, phone_number: e.target.value })}
+            requiredIcon
+            name="phone_number"
+            label="phone_number"
+            control={control}
+            placeholder="Enter your phone_number"
+          />
         </FormControl>
 
         <Button

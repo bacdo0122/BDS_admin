@@ -73,6 +73,7 @@ interface User {
   name: string;
   email: string;
   password: string;
+  phone_number: string;
 }
 export const EditUser = () => {
   const dispatch = useAppDispatch();
@@ -83,6 +84,7 @@ export const EditUser = () => {
     name: detail && detail.name,
     email: detail && detail.email,
     password: detail && detail.password,
+    phone_number: detail && detail.phone_number
   });
   const {
     setError,
@@ -95,12 +97,13 @@ export const EditUser = () => {
       name: detail && detail.name,
       email: detail && detail.email,
       password: detail && detail.password,
+      phone_number: detail && detail.phone_number
     },
     resolver: yupResolver(createUserSchema),
   });
 
   const handleEditActor = async () => {
-    await EditExisUser(value.id, value.name, value.email, value.password);
+    await EditExisUser(value.id, value.name, value.email, value.password, value.phone_number);
     dispatch(setField(null));
     dispatch(setReset(!reset));
   };
@@ -149,6 +152,21 @@ export const EditUser = () => {
             control={control}
             placeholder="Enter your Password"
           />{' '}
+        </FormControl>
+        <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
+          <InputLabel shrink htmlFor="bootstrap-input">
+            Phone Number
+          </InputLabel>
+          <CreateFilmInput
+           type='number'
+           defaultValue={value.phone_number}
+            onChange1={(e: any) => setValue({ ...value, phone_number: e.target.value })}
+            requiredIcon
+            name="phone_number"
+            label="phone_number"
+            control={control}
+            placeholder="Enter your phone_number"
+          />
         </FormControl>
 
         <Button
