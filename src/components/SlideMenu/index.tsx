@@ -42,6 +42,7 @@ const SlideBody = styled(Box)<BoxProps>(() => ({
 
 export const SlideMenus = () => {
   const navigate = useNavigate();
+  console.log("menus:", menus)
   return (
     <Drawer open={true} variant="permanent">
       <SlideBody>

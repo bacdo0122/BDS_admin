@@ -55,12 +55,12 @@ const Ward = () => {
   },
   ]
   return <>
-    <HeaderCommon title="Huyện">
+    <HeaderCommon title="Xã">
       <SearchLayout layout="Wards"/>
       <Box sx={{width: "100%", marginTop: "20px", textAlign: "end"}}>
       <Button variant="contained" color="success" onClick={()=> dispatch(setField("create"))} >Thêm</Button>
       </Box>
-      {Ward && <Table title="Huyện" data={Ward}  column = {columnsCategories}/>}
+      {Ward && <Table title="Xã" data={Ward}  column = {columnsCategories}/>}
     </HeaderCommon>
   </>;
 };

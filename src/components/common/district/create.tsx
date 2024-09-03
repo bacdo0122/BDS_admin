@@ -103,10 +103,10 @@ export const CreateDistrict = () => {
   return (
     <Container>
       <MainWrapper>
-        <Label>Create Direction</Label>
+        <Label>Tạo quận</Label>
         <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
           <InputLabel shrink htmlFor="bootstrap-input">
-          Name
+          Tên
           </InputLabel>
           <CreateFilmInput
             onChange1={(e: any) => setValue({ ...value, name: e.target.value })}
@@ -123,7 +123,7 @@ export const CreateDistrict = () => {
           onClick={handleSubmit(handleCreateBanner)}
           sx={{ marginTop: '10px' }}
         >
-          Create
+          Tạo
         </Button>
       </MainWrapper>
       <CloseIcon>

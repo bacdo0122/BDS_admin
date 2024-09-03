@@ -94,10 +94,11 @@ interface Props {
 export const DropdownList = ({ Icon, title, items, onItemClick, path }: Props) => {
   const [open, setOpen] = useState(false);
   const location = useLocation();
+  console.log("path:", location.pathname , path)
   return (
     <Container>
       <Header
-        isActive={path === '/' ? location.pathname === path : location.pathname.includes(path)}
+        isActive={path === '/' ? location.pathname === path : location.pathname === ('/' + path)}
         onClick={() => {
           if (items.length > 0) {
             setOpen(!open);

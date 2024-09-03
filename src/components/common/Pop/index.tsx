@@ -459,9 +459,9 @@ export const Pop = () => {
             ]}
             requiredIcon
             name="furnishing"
-            label="Tiện nghi"
+            label="Nội thất"
             control={control}
-            placeholder="Enter furnishing "
+            placeholder="Nội thất"
           />
         </FormControl>
 

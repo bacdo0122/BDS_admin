@@ -106,10 +106,10 @@ export const CreateWard = () => {
   return (
     <Container>
       <MainWrapper>
-        <Label>Create Ward</Label>
+        <Label>Tạo Xã</Label>
         <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
           <InputLabel shrink htmlFor="bootstrap-input">
-          Name
+          Tên
           </InputLabel>
           <CreateFilmInput
             onChange1={(e: any) => setValue({ ...value, name: e.target.value })}
@@ -122,7 +122,7 @@ export const CreateWard = () => {
         </FormControl>
         <FormControl variant="standard" sx={{ width: '100%', marginTop: '10px' }}>
           <InputLabel shrink htmlFor="bootstrap-input">
-          districtId
+          Quận ID
           </InputLabel>
           <CreateFilmInput
             onChange1={(e: any) => setValue({ ...value, districtId: e.target.value })}
@@ -140,7 +140,7 @@ export const CreateWard = () => {
           onClick={handleSubmit(handleCreateBanner)}
           sx={{ marginTop: '10px' }}
         >
-          Create
+          Tạo
         </Button>
       </MainWrapper>
       <CloseIcon>

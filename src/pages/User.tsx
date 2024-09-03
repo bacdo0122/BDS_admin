@@ -19,8 +19,8 @@ const Cateogories = () => {
   
     {field: 'email', headerName: 'Email', width: 300 },
     {field: 'name', headerName: 'Tên', width: 300 },
-    {field: 'phone_number', headerName: 'Phone Number', width: 300 },
-    {field: 'avatar', headerName: 'Avatar', width: 300,
+    {field: 'phone_number', headerName: 'Số điện thoại', width: 300 },
+    {field: 'avatar', headerName: 'Ảnh', width: 300,
     renderCell: (params:any) => {
       return (
         <>
@@ -71,7 +71,7 @@ const Cateogories = () => {
   },
   ]
   return <>
-    <HeaderCommon title="Users">
+    <HeaderCommon title="Người dùng">
       <SearchLayout layout="users"/>
       <Box sx={{width: "100%", marginTop: "20px", textAlign: "end"}}>
       <Button variant="contained" color="success" onClick={()=> dispatch(setField("create"))} >Thêm</Button>

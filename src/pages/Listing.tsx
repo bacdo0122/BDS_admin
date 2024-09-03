@@ -77,47 +77,54 @@ const Listing = () => {
     type: 'actions',
     headerName: 'Hành động',
     width: 600,
-    getActions: (params:any) => [
-     
-      <GridActionsCellItem
-      key={1}
-      icon={ <Button variant="contained" color="success">Xóa</Button>}
-      label="Delete"
-      onClick={async()=> {
-        await deleteListing(params.id);
-        dispatch(setReset(!reset))
-      }}
-    />,
-    <GridActionsCellItem
-    key={2}
-    icon={ <Button variant="contained" color="secondary">Sửa</Button>}
-    label="Edit"
-    onClick={async()=> {
-
-      dispatch(setDetail(params.row));
-      dispatch(setField("edit"))
-    }}
-  />,
-   <GridActionsCellItem
-   key={3}
-   icon={ <Button variant="contained" >Xem chi tiết</Button>}
-   label="Detail"
-   onClick={async()=> {
-
-    dispatch(setDetail(params.row));
-    dispatch(setField("detail"))
-  }}
-  />,
-  <GridActionsCellItem
-  key={3}
-  icon={ <Button variant="contained" >Chấp nhận</Button>}
-  label="Detail"
-  onClick={async()=> {
-    await confirmListing(params.id);
-    dispatch(setReset(!reset))
- }}
- />
-    ] 
+    getActions: (params: any) => {
+      const actions = [
+        <GridActionsCellItem
+          key={1}
+          icon={<Button variant="contained" color="success">Xóa</Button>}
+          label="Delete"
+          onClick={async () => {
+            await deleteListing(params.id);
+            dispatch(setReset(!reset));
+          }}
+        />,
+        <GridActionsCellItem
+          key={2}
+          icon={<Button variant="contained" color="secondary">Sửa</Button>}
+          label="Edit"
+          onClick={async () => {
+            dispatch(setDetail(params.row));
+            dispatch(setField("edit"));
+          }}
+        />,
+        <GridActionsCellItem
+          key={3}
+          icon={<Button variant="contained">Xem chi tiết</Button>}
+          label="Detail"
+          onClick={async () => {
+            dispatch(setDetail(params.row));
+            dispatch(setField("detail"));
+          }}
+        />,
+      ];
+  
+      // Chỉ hiển thị nút "Chấp nhận" nếu status không phải là "done"
+      if (params.row.status !== 'done') {
+        actions.push(
+          <GridActionsCellItem
+            key={4}
+            icon={<Button variant="contained">Chấp nhận</Button>}
+            label="Accept"
+            onClick={async () => {
+              await confirmListing(params.id);
+              dispatch(setReset(!reset));
+            }}
+          />
+        );
+      }
+  
+      return actions;
+    },
   },
   ]
   return <>
